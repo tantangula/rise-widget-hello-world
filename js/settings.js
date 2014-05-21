@@ -5,9 +5,29 @@ RiseVision.Text.Settings = {};
 RiseVision.Text.Settings = (function($, gadgets) {
 	"use strict";
 
+	var _googleFonts = [];
+	var _editor = null;
+
+	function _getSettings() {
+		var settings = null, additionalParams = {};
+
+		$(".errors").empty();
+
+		additionalParams.data = $("#editable").val();
+		additionalParams.googleFonts = _googleFonts;
+
+	settings = {
+			"params" : null,
+			"additionalParams" : JSON.stringify(additionalParams)
+		};
+
+		$(".alert").hide();
+
+		gadgets.rpc.call("", "rscmd_saveSettings", null, settings);
+	}
+
 	function init() {
 		var $element = $("#editable");
-		var editor = null;
 
 		// Configure editor toolbar.
 		$element.wysihtml5({
@@ -27,14 +47,27 @@ RiseVision.Text.Settings = (function($, gadgets) {
 			//"font-size": true
 		});
 
-		editor = $element.data("wysihtml5").editor;
+		_editor = $element.data("wysihtml5").editor;
 
 		$(".font-picker").fontPicker({
-			"contentDocument": editor.composer.iframe.contentDocument
+			"contentDocument": _editor.composer.iframe.contentDocument
 		})
-		.on("googleFontSelected", function() {
-			// Pass font to editor.
-			$(".bfh-googlefontlist").attr("data-wysihtml5-command-value", $(".font-picker").data("plugin_fontPicker").getFont());
+		.on("googleFontSelected", function(e, googleFont) {
+			var found = false;
+
+			$(".bfh-googlefontlist").attr("data-wysihtml5-command-value", googleFont);
+
+			// Add font to array if it does not already exist.
+			for (var i = 0; i < _googleFonts.length; i++) {
+				if (_googleFonts[i] == googleFont) {
+					found = true;
+					break;
+				}
+			}
+
+			if (!found) {
+				_googleFonts.push(googleFont);
+			}
 		});
 
 		i18n.init(function(t) {
@@ -64,31 +97,22 @@ RiseVision.Text.Settings = (function($, gadgets) {
 		//Request additional parameters from the Viewer.
 		gadgets.rpc.call("", "rscmd_getAdditionalParams", function(result) {
 			var prefs = new gadgets.Prefs();
+			var util = RiseVision.Common.Utilities;
 
 			//Settings have been saved before.
 			if (result) {
 				result = JSON.parse(result);
+				_googleFonts = result.googleFonts;
 
-				editor.setValue(result.data);
+				_editor.setValue(result.data);
+
+				// Load all Google fonts.
+				for (var i = 0; i < _googleFonts.length; i++) {
+					util.loadGoogleFont(_googleFonts[i], _editor.composer.iframe.contentDocument);
+					_editor.composer.commands.exec("googleFont", _googleFonts[i]);
+				}
 			}
 		});
-	}
-
-	function _getSettings() {
-		var settings = null, additionalParams = {};
-
-		$(".errors").empty();
-
-		additionalParams.data = $("#editable").val();
-
-	settings = {
-			"params" : null,
-			"additionalParams" : JSON.stringify(additionalParams)
-		};
-
-		$(".alert").hide();
-
-		gadgets.rpc.call("", "rscmd_saveSettings", null, settings);
 	}
 
 	return {
