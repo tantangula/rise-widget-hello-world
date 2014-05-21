@@ -8,8 +8,6 @@ RiseVision.Text.Settings = (function($, gadgets) {
 	function init() {
 		var $element = $("#editable");
 		var editor = null;
-		var contentDocument = null;
-		var regex = null;
 
 		// Configure editor toolbar.
 		$element.wysihtml5({
@@ -30,37 +28,13 @@ RiseVision.Text.Settings = (function($, gadgets) {
 		});
 
 		editor = $element.data("wysihtml5").editor;
-		contentDocument = editor.composer.iframe.contentDocument;
-		regex = /wysiwyg-font-family-[a-z\-]+/g;	//TODO: May not work correctly.
-
-		/* TODO: Extend the editor so that other apps can use this functionality.
-			 Create a command for selecting a Google font. */
-		wysihtml5.commands.googleFont = {
-			exec: function(composer, command) {
-				var family = $(".font-picker").data("plugin_fontPicker").getFont();
-				var className = "wysiwyg-font-family-" +
-					family.replace(" ", "-").toLowerCase();
-				var style = document.createElement("style");
-
-				// Add a CSS class for the selected font.
-				style.type = "text/css";
-				style.innerHTML = "." + className +
-					" { font-family: '" + family + "', serif; }";
-				contentDocument.getElementsByTagName("head")[0].appendChild(style);
-
-				return wysihtml5.commands.formatInline.exec(composer, command, "span",
-					className, regex);
-			},
-			state: function(composer, command) {
-				var family = $(".font-picker").data("plugin_fontPicker").getFont();
-
-				return wysihtml5.commands.formatInline.state(composer, command, "span",
-					"wysiwyg-font-family-" + family.replace(" ", "-").toLowerCase(), regex);
-			}
-		};
 
 		$(".font-picker").fontPicker({
-			"contentDocument": contentDocument
+			"contentDocument": editor.composer.iframe.contentDocument
+		})
+		.on("googleFontSelected", function() {
+			// Pass font to editor.
+			$(".bfh-googlefontlist").attr("data-wysihtml5-command-value", $(".font-picker").data("plugin_fontPicker").getFont());
 		});
 
 		i18n.init(function(t) {
@@ -94,6 +68,8 @@ RiseVision.Text.Settings = (function($, gadgets) {
 			//Settings have been saved before.
 			if (result) {
 				result = JSON.parse(result);
+
+				editor.setValue(result.data);
 			}
 		});
 	}
