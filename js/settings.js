@@ -5,7 +5,6 @@ RiseVision.Text.Settings = {};
 RiseVision.Text.Settings = (function($, gadgets) {
 	"use strict";
 
-	var _googleFonts = [];
 	var _editor = null;
 
 	function _getSettings() {
@@ -14,7 +13,6 @@ RiseVision.Text.Settings = (function($, gadgets) {
 		$(".errors").empty();
 
 		additionalParams.data = $("#editable").val();
-		additionalParams.googleFonts = _googleFonts;
 
 	settings = {
 			"params" : null,
@@ -52,22 +50,24 @@ RiseVision.Text.Settings = (function($, gadgets) {
 		$(".font-picker").fontPicker({
 			"contentDocument": _editor.composer.iframe.contentDocument
 		})
+		.on("fontSelected", function(e, fontName, fontFamily) {
+			_editor.composer.commands.exec("standardFont", fontName, fontFamily, [{
+				name: "data-standard-font-name",
+				value: fontName
+			},
+			{
+				name: "data-standard-font-family",
+				value: fontFamily
+			}
+			]);
+		})
 		.on("googleFontSelected", function(e, googleFont) {
-			var found = false;
-
-			$(".bfh-googlefontlist").attr("data-wysihtml5-command-value", googleFont);
-
-			// Add font to array if it does not already exist.
-			for (var i = 0; i < _googleFonts.length; i++) {
-				if (_googleFonts[i] == googleFont) {
-					found = true;
-					break;
-				}
-			}
-
-			if (!found) {
-				_googleFonts.push(googleFont);
-			}
+			// Pass the selected Google font to the editor so that it can
+			// constuct the element.
+			_editor.composer.commands.exec("googleFont", googleFont, [{
+				name: "data-google-font",
+				value: googleFont
+			}]);
 		});
 
 		i18n.init(function(t) {
@@ -98,19 +98,30 @@ RiseVision.Text.Settings = (function($, gadgets) {
 		gadgets.rpc.call("", "rscmd_getAdditionalParams", function(result) {
 			var prefs = new gadgets.Prefs();
 			var util = RiseVision.Common.Utilities;
+			var attrs = [];
+			var standardFont, googleFont;
 
-			//Settings have been saved before.
+			// Settings have been saved before.
 			if (result) {
 				result = JSON.parse(result);
-				_googleFonts = result.googleFonts;
 
 				_editor.setValue(result.data);
 
 				// Load all Google fonts.
-				for (var i = 0; i < _googleFonts.length; i++) {
-					util.loadGoogleFont(_googleFonts[i], _editor.composer.iframe.contentDocument);
-					_editor.composer.commands.exec("googleFont", _googleFonts[i]);
-				}
+				$.each($(result.data).find("span").andSelf(), function(index, value) {
+					standardFont = $(this).attr("data-standard-font-name");
+					googleFont = $(this).attr("data-google-font");
+
+					if (standardFont) {
+						_editor.composer.commands.exec("standardFont", standardFont, $(this).attr("data-standard-font-family"));
+					}
+
+					if (googleFont) {
+						util.loadGoogleFont(googleFont, _editor.composer.iframe.contentDocument);
+						// This won't add a new span tag because a range will not have been selected, which is what we want.
+						_editor.composer.commands.exec("googleFont", googleFont, null);
+					}
+				});
 			}
 		});
 	}
