@@ -50,25 +50,40 @@ RiseVision.Text.Settings = (function($, gadgets) {
 		$(".font-picker").fontPicker({
 			"contentDocument": _editor.composer.iframe.contentDocument
 		})
-		.on("fontSelected", function(e, fontName, fontFamily) {
-			_editor.composer.commands.exec("standardFont", fontName, fontFamily, [{
-				name: "data-standard-font-name",
-				value: fontName
-			},
-			{
-				name: "data-standard-font-family",
-				value: fontFamily
-			}
-			]);
-		})
-		.on("googleFontSelected", function(e, googleFont) {
-			// Pass the selected Google font to the editor so that it can
-			// constuct the element.
-			_editor.composer.commands.exec("googleFont", googleFont, [{
-				name: "data-google-font",
-				value: googleFont
-			}]);
-		});
+			.on("standardFontSelected", function(e, font, fontFamily) {
+				_editor.composer.commands.exec("standardFont", font, fontFamily, [{
+					name: "data-standard-font",
+					value: font
+				},
+				{
+					name: "data-standard-font-family",
+					value: fontFamily
+				}
+				]);
+
+				$element.focus();
+			})
+			.on("googleFontSelected", function(e, font) {
+				_editor.composer.commands.exec("googleFont", font, [{
+					name: "data-google-font",
+					value: font
+				}]);
+
+				$element.focus();
+			})
+			.on("customFontSelected", function(e, font, fontURL) {
+				_editor.composer.commands.exec("customFont", font, [{
+					name: "data-custom-font",
+					value: font
+				},
+				{
+					name: "data-custom-font-url",
+					value: fontURL
+				}
+				]);
+
+				$element.focus();
+			});
 
 		i18n.init(function(t) {
 			$(".widget-wrapper").i18n().show();
@@ -84,7 +99,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
 			_getSettings();
 		});
 
-		$("#cancel, #settings-close").on("click", function() {
+		$("#cancel, #close").on("click", function() {
 			gadgets.rpc.call("", "rscmd_closeSettings", null);
 		});
 
@@ -98,8 +113,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
 		gadgets.rpc.call("", "rscmd_getAdditionalParams", function(result) {
 			var prefs = new gadgets.Prefs();
 			var util = RiseVision.Common.Utilities;
-			var attrs = [];
-			var standardFont, googleFont;
+			var standardFont, googleFont, customFont;
 
 			// Settings have been saved before.
 			if (result) {
@@ -109,8 +123,9 @@ RiseVision.Text.Settings = (function($, gadgets) {
 
 				// Load all Google fonts.
 				$.each($(result.data).find("span").andSelf(), function(index, value) {
-					standardFont = $(this).attr("data-standard-font-name");
+					standardFont = $(this).attr("data-standard-font");
 					googleFont = $(this).attr("data-google-font");
+					customFont = $(this).attr("data-custom-font");
 
 					if (standardFont) {
 						_editor.composer.commands.exec("standardFont", standardFont, $(this).attr("data-standard-font-family"));
@@ -120,6 +135,11 @@ RiseVision.Text.Settings = (function($, gadgets) {
 						util.loadGoogleFont(googleFont, _editor.composer.iframe.contentDocument);
 						// This won't add a new span tag because a range will not have been selected, which is what we want.
 						_editor.composer.commands.exec("googleFont", googleFont, null);
+					}
+
+					if (customFont) {
+						util.loadCustomFont(customFont, $(this).attr("data-custom-font-url"), _editor.composer.iframe.contentDocument);
+						_editor.composer.commands.exec("customFont", customFont, $(this).attr("data-custom-font-url"));
 					}
 				});
 			}
