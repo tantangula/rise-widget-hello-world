@@ -10,7 +10,8 @@
 	<link rel="stylesheet" href="//s3.amazonaws.com/rise-common-test/styles/bootstrap-wysihtml5/bootstrap-wysihtml5.css">
 	<link rel="stylesheet" href="//s3.amazonaws.com/rise-common-test/styles/bootstrap-color-picker/bootstrap-colorpicker.min.css">
 	<link rel="stylesheet" href="//s3.amazonaws.com/rise-common-test/styles/bootstrap-form-helper/bootstrap-formhelpers.min.css">
-	<link rel="stylesheet" href="//s3.amazonaws.com/rise-common-test/scripts/font-picker/rise.css">
+	<link rel="stylesheet" href="//s3.amazonaws.com/rise-common-test/styles/bootstrap-select/bootstrap-select.min.css">
+	<link rel="stylesheet" href="//s3.amazonaws.com/rise-common-test/scripts/bootstrap-font-picker/rise.css">
 	<style>
 		html, body {
 			background-color: transparent;
@@ -20,8 +21,17 @@
 			display: none;
 		}
 
-		textarea {
+		#container {
+			height: 100%;
+		}
+
+		#editable {
 			width: 100%;
+			height: 70%;
+		}
+
+		#font-size .dropdown-menu {
+			min-width: 0;
 		}
 	</style>
 </head>
@@ -53,7 +63,9 @@
 		</div>
 		<div id="errors" class="alert alert-danger"></div>
 		<form role="form">
-			<textarea id="editable" name="editable" rows="10"></textarea>
+			<div id="container">
+				<textarea id="editable" class="form-control" name="editable"></textarea>
+			</div>
 		</form>
 	</div>
 
@@ -61,13 +73,15 @@
 	<script src="//rvashow2.appspot.com/gadgets/gadgets.min.js"></script>
 
 	<script src="//s3.amazonaws.com/rise-common-test/scripts/bootstrap/bootstrap.min.js"></script>
-	<script src="//s3.amazonaws.com/rise-common-test/scripts/bootstrap-form-helper/bootstrap-formhelpers.min.js"></script>
+	<script src="//s3.amazonaws.com/Donna/bootstrap-form-helpers/bootstrap-formhelpers.js"></script>
+	<script src="//s3.amazonaws.com/rise-common-test/scripts/bootstrap-select/bootstrap-select.min.js"></script>
 	<script src="//s3.amazonaws.com/rise-common-test/scripts/bootstrap-wysihtml5/lib/wysihtml5.js"></script>
 	<script src="//s3.amazonaws.com/rise-common-test/scripts/bootstrap-wysihtml5-custom/wysihtml5-custom.js"></script>
 	<script src="//s3.amazonaws.com/rise-common-test/scripts/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
 	<script src="//s3.amazonaws.com/rise-common-test/scripts/i18next/i18next.min.js"></script>
 	<script src="//s3.amazonaws.com/rise-common-test/scripts/sticky/jquery.sticky.min.js"></script>
-	<script src="//s3.amazonaws.com/rise-common-test/scripts/font-picker/jquery.font-picker.js"></script>
+	<script src="//s3.amazonaws.com/rise-common-test/scripts/bootstrap-font-picker/bootstrap-font-picker.js"></script>
+	<script src="//s3.amazonaws.com/rise-common-test/scripts/bootstrap-font-size-picker/bootstrap-font-size-picker.js"></script>
 	<script src="//s3.amazonaws.com/rise-common-test/scripts/rise/common.js"></script>
 	<script src="js/settings.js"></script>
 	<script>
