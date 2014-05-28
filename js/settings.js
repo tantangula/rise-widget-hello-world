@@ -6,7 +6,10 @@ RiseVision.Text.Settings = (function($, gadgets) {
 	"use strict";
 
 	var _editor = null;
-	var FONT_SIZE_PICKER_STYLESHEET = "http://s3.amazonaws.com/rise-common-test/scripts/bootstrap-font-size-picker/css/bootstrap-font-size-picker.css";
+	var FONT_SIZE_PICKER_STYLESHEET =
+		"http://s3.amazonaws.com/rise-common-test/scripts/bootstrap-font-size-picker/css/bootstrap-font-size-picker.css";
+	var HELP_URL =
+		"http://www.risevision.com/help/users/what-are-gadgets/content/playlist-item-text-editor/";
 
 	function _getSettings() {
 		var settings = null, additionalParams = {};
@@ -95,7 +98,8 @@ RiseVision.Text.Settings = (function($, gadgets) {
 		// Initialize the font size picker.
 		$(".font-size-picker").fontSizePicker({})
 			.on("change.bfhselectbox", function() {
-				_editor.composer.commands.exec("fontSize", $(this).find(".bfh-fontsizes").val());
+				_editor.composer.commands.exec("fontSize",
+					$(this).find(".bfh-fontsizes").val());
 			});
 
 		i18n.init(function(t) {
@@ -118,7 +122,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
 		});
 
 		$("#help").on("click", function() {
-			window.open("http://www.risevision.com/help/users/what-are-gadgets/content/playlist-item-text-editor/", "_blank");
+			window.open(HELP_URL, "_blank");
 		});
 
 		$(".alert").hide();
@@ -142,18 +146,23 @@ RiseVision.Text.Settings = (function($, gadgets) {
 					customFont = $(this).attr("data-custom-font");
 
 					if (standardFont) {
-						_editor.composer.commands.exec("standardFont", standardFont, $(this).attr("data-standard-font-family"));
+						_editor.composer.commands.exec("standardFont", standardFont,
+							$(this).attr("data-standard-font-family"));
 					}
 
 					if (googleFont) {
-						util.loadGoogleFont(googleFont, _editor.composer.iframe.contentDocument);
-						// This won't add a new span tag because a range will not have been selected, which is what we want.
+						util.loadGoogleFont(googleFont,
+							_editor.composer.iframe.contentDocument);
+						// This won't add a new span tag because a range will not have been
+						// selected, which is what we want.
 						_editor.composer.commands.exec("googleFont", googleFont, null);
 					}
 
 					if (customFont) {
-						util.loadCustomFont(customFont, $(this).attr("data-custom-font-url"), _editor.composer.iframe.contentDocument);
-						_editor.composer.commands.exec("customFont", customFont, $(this).attr("data-custom-font-url"));
+						util.loadCustomFont(customFont, $(this).attr("data-custom-font-url"),
+							_editor.composer.iframe.contentDocument);
+						_editor.composer.commands.exec("customFont", customFont,
+							$(this).attr("data-custom-font-url"));
 					}
 				});
 			}
