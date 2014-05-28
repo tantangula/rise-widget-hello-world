@@ -6,6 +6,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
 	"use strict";
 
 	var _editor = null;
+	var FONT_SIZE_PICKER_STYLESHEET = "http://s3.amazonaws.com/rise-common-test/scripts/bootstrap-font-size-picker/css/bootstrap-font-size-picker.css";
 
 	function _getSettings() {
 		var settings = null, additionalParams = {};
@@ -25,14 +26,19 @@ RiseVision.Text.Settings = (function($, gadgets) {
 	}
 
 	function init() {
-		var $element = $("#editable");
+		var $editable = $("#editable");
 
 		// Configure editor toolbar.
-		$element.wysihtml5({
+		$editable.wysihtml5({
 			"toolbar": {
 				"font-picker":
 					"<li>" +
 						"<div class='font-picker'>" +
+						"</div>" +
+					"</li>",
+				"font-size":
+					"<li>" +
+						"<div class='font-size-picker'>" +
 						"</div>" +
 					"</li>"
 			},
@@ -40,13 +46,14 @@ RiseVision.Text.Settings = (function($, gadgets) {
 			"lists": false,
 			"link": false,
 			"image": false,
-			//"color": true,
-			//"html": true,
-			//"font-size": true
+			"color": false,
+			"html": false,
+			"stylesheets": [FONT_SIZE_PICKER_STYLESHEET]
 		});
 
-		_editor = $element.data("wysihtml5").editor;
+		_editor = $editable.data("wysihtml5").editor;
 
+		// Initialize the font picker.
 		$(".font-picker").fontPicker({
 			"contentDocument": _editor.composer.iframe.contentDocument
 		})
@@ -61,7 +68,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
 				}
 				]);
 
-				$element.focus();
+				$editable.focus();
 			})
 			.on("googleFontSelected", function(e, font) {
 				_editor.composer.commands.exec("googleFont", font, [{
@@ -69,7 +76,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
 					value: font
 				}]);
 
-				$element.focus();
+				$editable.focus();
 			})
 			.on("customFontSelected", function(e, font, fontURL) {
 				_editor.composer.commands.exec("customFont", font, [{
@@ -82,11 +89,18 @@ RiseVision.Text.Settings = (function($, gadgets) {
 				}
 				]);
 
-				$element.focus();
+				$editable.focus();
+			});
+
+		// Initialize the font size picker.
+		$(".font-size-picker").fontSizePicker({})
+			.on("change.bfhselectbox", function() {
+				_editor.composer.commands.exec("fontSize", $(this).find(".bfh-fontsizes").val());
 			});
 
 		i18n.init(function(t) {
 			$(".widget-wrapper").i18n().show();
+			$(".selectpicker").selectpicker();
 
 			// Set buttons to be sticky only after wrapper is visible.
 			$(".buttons").sticky({
