@@ -51,7 +51,43 @@ RiseVision.Text.Settings = (function($, gadgets) {
 			"image": false,
 			"color": false,
 			"html": false,
-			"stylesheets": [FONT_SIZE_PICKER_STYLESHEET]
+			"stylesheets": [FONT_SIZE_PICKER_STYLESHEET],
+		});
+
+		// When the user clicks in the editor, find the font and font size
+		// for that element and set those values in the appropriate dropdowns.
+		$(".wysihtml5-sandbox").contents().find("body").on("click", function() {
+			var font = "", fontSize = "";
+			var node = null, parentNode = null;
+
+			node = _editor.composer.selection.getSelectedNode();
+
+			if (node) {
+				// This is a text node.
+				if (node.nodeType === 3) {
+					parentNode = node.parentNode;
+
+					// The parent node is an element.
+					if (parentNode && parentNode.nodeType === 1) {
+						// The parent node is not the editor element itself.
+						if (parentNode.tagName.toLowerCase() !== "body") {
+							font = window.getComputedStyle(parentNode, null)
+								.getPropertyValue("font-family");
+							fontSize = window.getComputedStyle(parentNode, null)
+								.getPropertyValue("font-size");
+
+							if (font) {
+								$(".font-picker").data("plugin_fontPicker").setFont(font);
+							}
+
+							if (fontSize) {
+								$(".font-size-picker").data("plugin_fontSizePicker")
+									.setFontSize(fontSize);
+							}
+						}
+					}
+				}
+			}
 		});
 
 		_editor = $editable.data("wysihtml5").editor;
@@ -104,7 +140,6 @@ RiseVision.Text.Settings = (function($, gadgets) {
 
 		i18n.init(function(t) {
 			$(".widget-wrapper").i18n().show();
-			$(".selectpicker").selectpicker();
 
 			// Set buttons to be sticky only after wrapper is visible.
 			$(".buttons").sticky({
