@@ -186,8 +186,9 @@ RiseVision.Text.Settings = (function($, gadgets) {
           }
 
           if (googleFont) {
-            util.loadGoogleFont(googleFont,
-              _editor.composer.iframe.contentDocument);
+            $(".font-picker").data("plugin_fontPicker")
+              .addGoogleFont(googleFont, false);
+
             // This won't add a new span tag because a range will not have been
             // selected, which is what we want.
             _editor.composer.commands.exec("googleFont", googleFont, null);
