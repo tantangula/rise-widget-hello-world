@@ -7,7 +7,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
 
   var _editor = null;
   var FONT_SIZE_PICKER_STYLESHEET =
-    "http://s3.amazonaws.com/rise-common-test/scripts/bootstrap-font-size-picker/css/bootstrap-font-size-picker.css";
+    "http://s3.amazonaws.com/rise-common-test/styles/bootstrap-font-size-picker/bootstrap-font-size-picker.css";
   var HELP_URL =
     "http://www.risevision.com/help/users/what-are-gadgets/content/playlist-item-text-editor/";
 
