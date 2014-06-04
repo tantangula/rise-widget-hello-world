@@ -1,0 +1,11 @@
+.color-picker {
+  padding: 2px 2px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, .15);
+}
+
+.color-picker > div {
+  width: 24px;
+  height: 24px;
+  background-image: url(../images/text_color_picker_icon.gif);
+}

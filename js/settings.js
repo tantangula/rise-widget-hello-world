@@ -6,6 +6,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
   "use strict";
 
   var _editor = null;
+  var textColor = "";
   var FONT_SIZE_PICKER_STYLESHEET =
     "http://s3.amazonaws.com/rise-common-test/styles/bootstrap-font-size-picker/bootstrap-font-size-picker.css";
   var HELP_URL =
@@ -34,6 +35,12 @@ RiseVision.Text.Settings = (function($, gadgets) {
     // Configure editor toolbar.
     $editable.wysihtml5({
       "toolbar": {
+        "text-color-picker":
+          "<li>" +
+            "<a href='#' class='color-picker btn btn-default'>" +
+              "<img src='images/text_color_picker_icon.gif' />" +
+            "</a>" +
+          "</li>",
         "font-picker":
           "<li>" +
             "<div class='font-picker'>" +
@@ -43,7 +50,11 @@ RiseVision.Text.Settings = (function($, gadgets) {
           "<li>" +
             "<div class='font-size-picker'>" +
             "</div>" +
-          "</li>"
+          "</li>",
+        "highlight-color-picker":
+          "<li>" +
+            "<input id='highlight-color-picker' type='color' />" +
+          "</li>",
       },
       "font-styles": false,
       "lists": false,
@@ -138,6 +149,18 @@ RiseVision.Text.Settings = (function($, gadgets) {
           $(this).find(".bfh-fontsizes").val());
       });
 
+    // Initialize the color pickers.
+    $(".color-picker").colorpicker()
+      .on("changeColor", function(e) {
+        textColor = e.color.toHex();
+      })
+      .on("hidePicker", function(e) {
+        _editor.composer.commands.exec("textColor", textColor, [{
+          name: "data-text-color",
+          value: textColor
+        }]);
+      });
+
     i18n.init(function(t) {
       $(".widget-wrapper").i18n().show();
 
@@ -166,7 +189,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
     gadgets.rpc.call("", "rscmd_getAdditionalParams", function(result) {
       var prefs = new gadgets.Prefs();
       var util = RiseVision.Common.Utilities;
-      var standardFont, googleFont, customFont;
+      var standardFont, googleFont, customFont, textColor;
 
       // Settings have been saved before.
       if (result) {
@@ -174,31 +197,39 @@ RiseVision.Text.Settings = (function($, gadgets) {
 
         _editor.setValue(result.data);
 
-        // Load all Google fonts.
         $.each($(result.data).find("span").andSelf(), function(index, value) {
           standardFont = $(this).attr("data-standard-font");
           googleFont = $(this).attr("data-google-font");
           customFont = $(this).attr("data-custom-font");
+          textColor = $(this).attr("data-text-color");
 
+          // Add CSS for standard fonts.
           if (standardFont) {
             _editor.composer.commands.exec("standardFont", standardFont,
               $(this).attr("data-standard-font-family"));
           }
 
+          // Load and add CSS for Google fonts.
           if (googleFont) {
             $(".font-picker").data("plugin_fontPicker")
               .addGoogleFont(googleFont, false);
 
             // This won't add a new span tag because a range will not have been
             // selected, which is what we want.
-            _editor.composer.commands.exec("googleFont", googleFont, null);
+            _editor.composer.commands.exec("googleFont", googleFont);
           }
 
+          // Load and add CSS for custom fonts.
           if (customFont) {
             util.loadCustomFont(customFont, $(this).attr("data-custom-font-url"),
               _editor.composer.iframe.contentDocument);
             _editor.composer.commands.exec("customFont", customFont,
               $(this).attr("data-custom-font-url"));
+          }
+
+          // Add CSS for colors.
+          if (textColor) {
+            _editor.composer.commands.exec("textColor", textColor);
           }
         });
       }
