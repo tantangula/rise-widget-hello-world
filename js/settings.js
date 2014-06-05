@@ -35,13 +35,11 @@ RiseVision.Text.Settings = (function($, gadgets) {
     // Configure editor toolbar.
     $editable.wysihtml5({
       "toolbar": {
-        "text-color-picker":
-          "<li>" +
-            "<a href='#' class='color-picker btn btn-default'>" +
-              "<img src='images/text_color_picker_icon.gif' />" +
-            "</a>" +
+        "text-color":
+           "<li>" +
+            "<input id='text-color' type='color' />" +
           "</li>",
-        "font-picker":
+        "font":
           "<li>" +
             "<div class='font-picker'>" +
             "</div>" +
@@ -50,10 +48,6 @@ RiseVision.Text.Settings = (function($, gadgets) {
           "<li>" +
             "<div class='font-size-picker'>" +
             "</div>" +
-          "</li>",
-        "highlight-color-picker":
-          "<li>" +
-            "<input id='highlight-color-picker' type='color' />" +
           "</li>",
       },
       "font-styles": false,
@@ -68,8 +62,11 @@ RiseVision.Text.Settings = (function($, gadgets) {
     // When the user clicks in the editor, find the font and font size
     // for that element and set those values in the appropriate dropdowns.
     $(".wysihtml5-sandbox").contents().find("body").on("click", function() {
-      var font = "", fontSize = "";
+      var font = "", fontSize = "", color = "";
       var node = null, parentNode = null;
+
+      // Hide color pickers.
+      $("#text-color").spectrum("hide");
 
       node = _editor.composer.selection.getSelectedNode();
 
@@ -86,6 +83,8 @@ RiseVision.Text.Settings = (function($, gadgets) {
                 .getPropertyValue("font-family");
               fontSize = window.getComputedStyle(parentNode, null)
                 .getPropertyValue("font-size");
+              color = window.getComputedStyle(parentNode, null)
+                .getPropertyValue("color");
 
               if (font) {
                 $(".font-picker").data("plugin_fontPicker").setFont(font);
@@ -94,6 +93,10 @@ RiseVision.Text.Settings = (function($, gadgets) {
               if (fontSize) {
                 $(".font-size-picker").data("plugin_fontSizePicker")
                   .setFontSize(fontSize);
+              }
+
+              if (color) {
+                $("#text-color").spectrum("set", color);
               }
             }
           }
@@ -150,16 +153,20 @@ RiseVision.Text.Settings = (function($, gadgets) {
       });
 
     // Initialize the color pickers.
-    $(".color-picker").colorpicker()
-      .on("changeColor", function(e) {
-        textColor = e.color.toHex();
-      })
-      .on("hidePicker", function(e) {
-        _editor.composer.commands.exec("textColor", textColor, [{
+    $("#text-color").spectrum({
+      color: "#000",
+      showInput: true,
+      chooseText: "Select",
+      cancelText: "Cancel",
+      change: function(color) {
+        var hexColor = color.toHexString();
+
+        _editor.composer.commands.exec("textColor", hexColor, [{
           name: "data-text-color",
-          value: textColor
+          value: hexColor
         }]);
-      });
+      },
+    });
 
     i18n.init(function(t) {
       $(".widget-wrapper").i18n().show();
@@ -189,7 +196,8 @@ RiseVision.Text.Settings = (function($, gadgets) {
     gadgets.rpc.call("", "rscmd_getAdditionalParams", function(result) {
       var prefs = new gadgets.Prefs();
       var util = RiseVision.Common.Utilities;
-      var standardFont, googleFont, customFont, textColor;
+      var standardFont, googleFont, customFont;
+      var textColor;
 
       // Settings have been saved before.
       if (result) {
