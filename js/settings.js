@@ -156,7 +156,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
     $("#text-color").spectrum({
       color: "#000",
       showInput: true,
-      chooseText: "Select",
+      chooseText: "Apply",
       cancelText: "Cancel",
       change: function(color) {
         var hexColor = color.toHexString();
