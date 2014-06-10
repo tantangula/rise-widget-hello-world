@@ -29,6 +29,23 @@ RiseVision.Text.Settings = (function($, gadgets) {
     gadgets.rpc.call("", "rscmd_saveSettings", null, settings);
   }
 
+  function _configureColorPicker($elem, command, attribute) {
+    $elem.spectrum({
+      color: "#000",
+      showInput: true,
+      chooseText: "Apply",
+      cancelText: "Cancel",
+      change: function(color) {
+        var hexColor = color.toHexString();
+
+        _editor.composer.commands.exec(command, hexColor, [{
+          name: attribute,
+          value: hexColor
+        }]);
+      },
+    });
+  }
+
   function init() {
     var $editable = $("#editable");
 
@@ -38,6 +55,10 @@ RiseVision.Text.Settings = (function($, gadgets) {
         "text-color":
            "<li>" +
             "<input id='text-color' type='color' />" +
+          "</li>",
+        "highlight-color":
+           "<li>" +
+            "<input id='highlight-color' type='color' />" +
           "</li>",
         "font":
           "<li>" +
@@ -62,11 +83,12 @@ RiseVision.Text.Settings = (function($, gadgets) {
     // When the user clicks in the editor, find the font and font size
     // for that element and set those values in the appropriate dropdowns.
     $(".wysihtml5-sandbox").contents().find("body").on("click", function() {
-      var font = "", fontSize = "", color = "";
+      var font = "", fontSize = "", color = "", highlightColor = "";
       var node = null, parentNode = null;
 
       // Hide color pickers.
       $("#text-color").spectrum("hide");
+      $("#highlight-color").spectrum("hide");
 
       node = _editor.composer.selection.getSelectedNode();
 
@@ -85,6 +107,8 @@ RiseVision.Text.Settings = (function($, gadgets) {
                 .getPropertyValue("font-size");
               color = window.getComputedStyle(parentNode, null)
                 .getPropertyValue("color");
+              highlightColor = window.getComputedStyle(parentNode, null)
+                .getPropertyValue("background-color");
 
               if (font) {
                 $(".font-picker").data("plugin_fontPicker").setFont(font);
@@ -97,6 +121,10 @@ RiseVision.Text.Settings = (function($, gadgets) {
 
               if (color) {
                 $("#text-color").spectrum("set", color);
+              }
+
+              if (highlightColor) {
+                $("#highlight-color").spectrum("set", highlightColor);
               }
             }
           }
@@ -153,20 +181,8 @@ RiseVision.Text.Settings = (function($, gadgets) {
       });
 
     // Initialize the color pickers.
-    $("#text-color").spectrum({
-      color: "#000",
-      showInput: true,
-      chooseText: "Apply",
-      cancelText: "Cancel",
-      change: function(color) {
-        var hexColor = color.toHexString();
-
-        _editor.composer.commands.exec("textColor", hexColor, [{
-          name: "data-text-color",
-          value: hexColor
-        }]);
-      },
-    });
+    _configureColorPicker($("#text-color"), "textColor", "data-text-color");
+    _configureColorPicker($("#highlight-color"), "highlightColor", "data-highlight-color");
 
     i18n.init(function(t) {
       $(".widget-wrapper").i18n().show();
@@ -197,7 +213,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
       var prefs = new gadgets.Prefs();
       var util = RiseVision.Common.Utilities;
       var standardFont, googleFont, customFont;
-      var textColor;
+      var textColor, highlightColor;
 
       // Settings have been saved before.
       if (result) {
@@ -210,6 +226,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
           googleFont = $(this).attr("data-google-font");
           customFont = $(this).attr("data-custom-font");
           textColor = $(this).attr("data-text-color");
+          highlightColor = $(this).attr("data-highlight-color");
 
           // Add CSS for standard fonts.
           if (standardFont) {
@@ -238,6 +255,10 @@ RiseVision.Text.Settings = (function($, gadgets) {
           // Add CSS for colors.
           if (textColor) {
             _editor.composer.commands.exec("textColor", textColor);
+          }
+
+          if (highlightColor) {
+            _editor.composer.commands.exec("highlightColor", highlightColor);
           }
         });
       }
