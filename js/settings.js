@@ -29,17 +29,18 @@ RiseVision.Text.Settings = (function($, gadgets) {
     gadgets.rpc.call("", "rscmd_saveSettings", null, settings);
   }
 
-  function _configureColorPicker($elem, command, attribute) {
-    $elem.spectrum({
+  function _configureColorPicker(options) {
+    options.elem.spectrum({
       color: "#000",
+      type: options.type,
       showInput: true,
       chooseText: "Apply",
       cancelText: "Cancel",
       change: function(color) {
         var hexColor = color.toHexString();
 
-        _editor.composer.commands.exec(command, hexColor, [{
-          name: attribute,
+        _editor.composer.commands.exec(options.command, hexColor, [{
+          name: options.attribute,
           value: hexColor
         }]);
       },
@@ -181,8 +182,19 @@ RiseVision.Text.Settings = (function($, gadgets) {
       });
 
     // Initialize the color pickers.
-    _configureColorPicker($("#text-color"), "textColor", "data-text-color");
-    _configureColorPicker($("#highlight-color"), "highlightColor", "data-highlight-color");
+    _configureColorPicker({
+      elem: $("#text-color"),
+      type: "text",
+      command: "textColor",
+      attribute: "data-text-color"
+    });
+
+    _configureColorPicker({
+      elem: $("#highlight-color"),
+      type: "background",
+      command: "highlightColor",
+      attribute: "data-highlight-color"
+    });
 
     i18n.init(function(t) {
       $(".widget-wrapper").i18n().show();
