@@ -13,20 +13,41 @@ RiseVision.Text.Settings = (function($, gadgets) {
     "http://www.risevision.com/help/users/what-are-gadgets/content/playlist-item-text-editor/";
 
   function _getSettings() {
-    var settings = null, additionalParams = {};
+    var settings = null,  params = "", additionalParams = {};
+    var backgroundColor = _editor.composer.doc.body
+      .getAttribute("data-background-color");
 
     $(".errors").empty();
 
+    params = "&up_background-color=" + backgroundColor;
     additionalParams.data = $("#editable").val();
 
-  settings = {
-      "params" : null,
-      "additionalParams" : JSON.stringify(additionalParams)
+    settings = {
+      "params": params,
+      "additionalParams": JSON.stringify(additionalParams)
     };
 
     $(".alert").hide();
 
     gadgets.rpc.call("", "rscmd_saveSettings", null, settings);
+  }
+
+  function _configureColorPicker(options) {
+    options.elem.spectrum({
+      color: "#000",
+      type: options.type,
+      showInput: true,
+      chooseText: "Apply",
+      cancelText: "Cancel",
+      change: function(color) {
+        var hexColor = color.toHexString();
+
+        _editor.composer.commands.exec(options.command, hexColor, [{
+          name: options.attribute,
+          value: hexColor
+        }]);
+      },
+    });
   }
 
   function init() {
@@ -39,6 +60,10 @@ RiseVision.Text.Settings = (function($, gadgets) {
            "<li>" +
             "<input id='text-color' type='color' />" +
           "</li>",
+        "highlight-color":
+           "<li>" +
+            "<input id='highlight-color' type='color' />" +
+          "</li>",
         "font":
           "<li>" +
             "<div class='font-picker'>" +
@@ -48,6 +73,10 @@ RiseVision.Text.Settings = (function($, gadgets) {
           "<li>" +
             "<div class='font-size-picker'>" +
             "</div>" +
+          "</li>",
+        "background-color":
+           "<li>" +
+            "<input id='background-color' type='color' />" +
           "</li>",
       },
       "font-styles": false,
@@ -62,11 +91,12 @@ RiseVision.Text.Settings = (function($, gadgets) {
     // When the user clicks in the editor, find the font and font size
     // for that element and set those values in the appropriate dropdowns.
     $(".wysihtml5-sandbox").contents().find("body").on("click", function() {
-      var font = "", fontSize = "", color = "";
+      var font = "", fontSize = "";
+      var color = "", highlightColor = "";
       var node = null, parentNode = null;
 
       // Hide color pickers.
-      $("#text-color").spectrum("hide");
+      $("#text-color, #highlight-color, #background-color").spectrum("hide");
 
       node = _editor.composer.selection.getSelectedNode();
 
@@ -85,6 +115,8 @@ RiseVision.Text.Settings = (function($, gadgets) {
                 .getPropertyValue("font-size");
               color = window.getComputedStyle(parentNode, null)
                 .getPropertyValue("color");
+              highlightColor = window.getComputedStyle(parentNode, null)
+                .getPropertyValue("background-color");
 
               if (font) {
                 $(".font-picker").data("plugin_fontPicker").setFont(font);
@@ -97,6 +129,10 @@ RiseVision.Text.Settings = (function($, gadgets) {
 
               if (color) {
                 $("#text-color").spectrum("set", color);
+              }
+
+              if (highlightColor) {
+                $("#highlight-color").spectrum("set", highlightColor);
               }
             }
           }
@@ -153,19 +189,25 @@ RiseVision.Text.Settings = (function($, gadgets) {
       });
 
     // Initialize the color pickers.
-    $("#text-color").spectrum({
-      color: "#000",
-      showInput: true,
-      chooseText: "Apply",
-      cancelText: "Cancel",
-      change: function(color) {
-        var hexColor = color.toHexString();
+    _configureColorPicker({
+      elem: $("#text-color"),
+      type: "text",
+      command: "textColor",
+      attribute: "data-text-color"
+    });
 
-        _editor.composer.commands.exec("textColor", hexColor, [{
-          name: "data-text-color",
-          value: hexColor
-        }]);
-      },
+    _configureColorPicker({
+      elem: $("#highlight-color"),
+      type: "background",
+      command: "highlightColor",
+      attribute: "data-highlight-color"
+    });
+
+    _configureColorPicker({
+      elem: $("#background-color"),
+      type: "background",
+      command: "backgroundColor",
+      attribute: "data-background-color"
     });
 
     i18n.init(function(t) {
@@ -197,7 +239,12 @@ RiseVision.Text.Settings = (function($, gadgets) {
       var prefs = new gadgets.Prefs();
       var util = RiseVision.Common.Utilities;
       var standardFont, googleFont, customFont;
-      var textColor;
+      var textColor, highlightColor;
+      var backgroundColor = prefs.getString("background-color");
+
+      if (backgroundColor) {
+        _editor.composer.commands.exec("backgroundColor", backgroundColor);
+      }
 
       // Settings have been saved before.
       if (result) {
@@ -210,6 +257,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
           googleFont = $(this).attr("data-google-font");
           customFont = $(this).attr("data-custom-font");
           textColor = $(this).attr("data-text-color");
+          highlightColor = $(this).attr("data-highlight-color");
 
           // Add CSS for standard fonts.
           if (standardFont) {
@@ -238,6 +286,10 @@ RiseVision.Text.Settings = (function($, gadgets) {
           // Add CSS for colors.
           if (textColor) {
             _editor.composer.commands.exec("textColor", textColor);
+          }
+
+          if (highlightColor) {
+            _editor.composer.commands.exec("highlightColor", highlightColor);
           }
         });
       }
