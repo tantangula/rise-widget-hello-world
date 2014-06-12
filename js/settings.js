@@ -170,11 +170,11 @@ RiseVision.Text.Settings = (function($, gadgets) {
       "toolbar": {
         "text-color":
            "<li>" +
-            "<input id='text-color' type='color' />" +
+            "<input id='text-color' type='color'>" +
           "</li>",
         "highlight-color":
            "<li>" +
-            "<input id='highlight-color' type='color' />" +
+            "<input id='highlight-color' type='color'>" +
           "</li>",
         "font":
           "<li>" +
@@ -188,7 +188,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
           "</li>",
         "background-color":
            "<li>" +
-            "<input id='background-color' type='color' />" +
+            "<input id='background-color' type='color'>" +
           "</li>",
       },
       "font-styles": false,
