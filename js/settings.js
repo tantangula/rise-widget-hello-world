@@ -213,7 +213,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
     });
 
     // Configure the font size picker.
-    $_fontSizePicker.fontSizePicker({});
+    $_fontSizePicker.fontSizePicker();
 
     // Configure the color pickers.
     _configureColorPicker({
