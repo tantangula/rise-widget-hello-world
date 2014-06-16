@@ -67,7 +67,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
     });
 
     // Font picker
-    $($_fontPicker.data("plugin_fontPicker"))
+    $_fontPicker
       .on("standardFontSelected", function(e, font, fontFamily) {
         _editor.composer.commands.exec("standardFont", font, fontFamily, [{
           name: "data-standard-font",
@@ -104,11 +104,9 @@ RiseVision.Text.Settings = (function($, gadgets) {
       });
 
     // Font size picker
-    $($_fontSizePicker.data("plugin_fontSizePicker"))
-      .on("change.bfhselectbox", function() {
-        _editor.composer.commands.exec("fontSize",
-          $(this).find(".bfh-fontsizes").val());
-      });
+    $_fontSizePicker.on("sizeChanged", function(e, size) {
+      _editor.composer.commands.exec("fontSize", size);
+    });
 
     // When the user clicks in the editor, set toolbar to match text styles.
     $(".wysihtml5-sandbox").contents().find("body").on("click", function() {
@@ -226,7 +224,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
 
     _configureColorPicker({
       elem: $_highlightColor,
-      type: "background",
+      type: "highlight",
       color: "transparent",
       command: "highlightColor",
       attribute: "data-highlight-color"
