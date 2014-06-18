@@ -10,7 +10,11 @@ RiseVision.Text.Settings = (function($, gadgets) {
   var $_fontPicker, $_fontSizePicker;
   var $_textColor, $_highlightColor, $_backgroundColor;
   var FONT_SIZE_PICKER_STYLESHEET =
-    "http://s3.amazonaws.com/rise-common-test/styles/bootstrap-font-size-picker/bootstrap-font-size-picker.css";
+    "components/bootstrap-form-components/dist/css/all.css";
+  var LINE_HEIGHT_STYLESHEET =
+    "components/rv-bootstrap3-wysihtml5/dist/css/bootstrap3-wysihtml5-line-height.min.css";
+  var ALIGNMENT_STYLESHEET =
+    "components/style-guide/dist/css/alignment.min.css";
   var HELP_URL =
     "http://www.risevision.com/help/users/what-are-gadgets/content/playlist-item-text-editor/";
 
@@ -35,77 +39,17 @@ RiseVision.Text.Settings = (function($, gadgets) {
     gadgets.rpc.call("", "rscmd_saveSettings", null, settings);
   }
 
-  function _configureColorPicker(options) {
-    options.elem.spectrum({
-      type: options.type,
-      color: options.color,
-      showInput: true,
-      chooseText: "Apply",
-      cancelText: "Cancel",
-      change: function(color) {
-        var hexColor = color.toHexString();
-
-        _editor.composer.commands.exec(options.command, hexColor, [{
-          name: options.attribute,
-          value: hexColor
-        }]);
-      },
-    });
-  }
-
   function _bind() {
     $("#save").on("click", function() {
       _getSettings();
     });
 
-    $("#cancel, #close").on("click", function() {
+    $("#cancel, .close, .widget-overlay").on("click", function() {
       gadgets.rpc.call("", "rscmd_closeSettings", null);
     });
 
     $("#help").on("click", function() {
       window.open(HELP_URL, "_blank");
-    });
-
-    // Font picker
-    $_fontPicker
-      .on("standardFontSelected", function(e, font, fontFamily) {
-        _editor.composer.commands.exec("standardFont", font, fontFamily, [{
-          name: "data-standard-font",
-          value: font
-        },
-        {
-          name: "data-standard-font-family",
-          value: fontFamily
-        }
-        ]);
-
-        $_editable.focus();
-      })
-      .on("googleFontSelected", function(e, font) {
-        _editor.composer.commands.exec("googleFont", font, [{
-          name: "data-google-font",
-          value: font
-        }]);
-
-        $_editable.focus();
-      })
-      .on("customFontSelected", function(e, font, fontURL) {
-        _editor.composer.commands.exec("customFont", font, [{
-          name: "data-custom-font",
-          value: font
-        },
-        {
-          name: "data-custom-font-url",
-          value: fontURL
-        }
-        ]);
-
-        $_editable.focus();
-      });
-
-    // Font size picker
-    $_fontSizePicker.on("sizeChanged", function(e, size) {
-      _editor.composer.commands.exec("fontSize", size);
     });
 
     // When the user clicks in the editor, set toolbar to match text styles.
@@ -165,37 +109,12 @@ RiseVision.Text.Settings = (function($, gadgets) {
   function init() {
     // Configure editor toolbar.
     $_editable.wysihtml5({
-      "toolbar": {
-        "text-color":
-           "<li>" +
-            "<input id='text-color' type='color'>" +
-          "</li>",
-        "highlight-color":
-           "<li>" +
-            "<input id='highlight-color' type='color'>" +
-          "</li>",
-        "font":
-          "<li>" +
-            "<div class='font-picker'>" +
-            "</div>" +
-          "</li>",
-        "font-size":
-          "<li>" +
-            "<div class='font-size-picker'>" +
-            "</div>" +
-          "</li>",
-        "background-color":
-           "<li>" +
-            "<input id='background-color' type='color'>" +
-          "</li>",
-      },
       "font-styles": false,
       "lists": false,
       "link": false,
       "image": false,
-      "color": false,
-      "html": false,
-      "stylesheets": [FONT_SIZE_PICKER_STYLESHEET],
+      "stylesheets": [FONT_SIZE_PICKER_STYLESHEET, LINE_HEIGHT_STYLESHEET,
+        ALIGNMENT_STYLESHEET],
     });
 
     _editor = $_editable.data("wysihtml5").editor;
@@ -204,39 +123,6 @@ RiseVision.Text.Settings = (function($, gadgets) {
     $_textColor = $("#text-color");
     $_highlightColor = $("#highlight-color");
     $_backgroundColor = $("#background-color");
-
-    // Configure the font picker.
-    $_fontPicker.fontPicker({
-      "contentDocument": _editor.composer.iframe.contentDocument
-    });
-
-    // Configure the font size picker.
-    $_fontSizePicker.fontSizePicker();
-
-    // Configure the color pickers.
-    _configureColorPicker({
-      elem: $_textColor,
-      type: "text",
-      color: "#000",
-      command: "textColor",
-      attribute: "data-text-color"
-    });
-
-    _configureColorPicker({
-      elem: $_highlightColor,
-      type: "highlight",
-      color: "transparent",
-      command: "highlightColor",
-      attribute: "data-highlight-color"
-    });
-
-    _configureColorPicker({
-      elem: $_backgroundColor,
-      type: "background",
-      color: "#fff",
-      command: "backgroundColor",
-      attribute: "data-background-color"
-    });
 
     _bind();
 

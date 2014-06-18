@@ -1,0 +1,29 @@
+{
+  "name": "widget-text",
+  "version": "0.1.0",
+  "homepage": "https://github.com/Rise-Vision/widget-text",
+  "authors": [
+    "Donna Peplinskie"
+  ],
+  "description": "Rise Vision Text Widget",
+  "keywords": [
+    "rise-vision",
+    "text",
+    "widget",
+    "wysiwyg",
+    "editor"
+  ],
+  "license": "GPLv3",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components",
+    "test"
+  ],
+  "dependencies": {
+    "jquery": "1.11.0",
+    "bootstrap3-wysihtml5": "https://github.com/Rise-Vision/bootstrap3-wysihtml5.git",
+    "style-guide": "https://github.com/Rise-Vision/common-style.git"
+  }
+}
