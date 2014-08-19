@@ -10,11 +10,11 @@ RiseVision.Text.Settings = (function($, gadgets) {
   var $_fontPicker, $_fontSizePicker;
   var $_textColor, $_highlightColor, $_backgroundColor;
   var FONT_SIZE_PICKER_STYLESHEET =
-    "components/bootstrap-form-components/dist/css/all.css";
+    "//s3.amazonaws.com/rise-components/bootstrap-form-components/0.1.8/dist/css/all.min.css";
   var LINE_HEIGHT_STYLESHEET =
-    "components/rv-bootstrap3-wysihtml5/dist/css/bootstrap3-wysihtml5-line-height.min.css";
+    "//s3.amazonaws.com/rise-components/rv-bootstrap3-wysihtml5/0.0.3/dist/css/bootstrap3-wysihtml5-line-height.min.css";
   var ALIGNMENT_STYLESHEET =
-    "components/style-guide/dist/css/alignment.min.css";
+    "//s3.amazonaws.com/rise-components/common-style/css/alignment.min.css";
   var HELP_URL =
     "http://www.risevision.com/help/users/what-are-gadgets/content/playlist-item-text-editor/";
 
