@@ -3,23 +3,19 @@
 (function () {
   "use strict";
 
-  var gulp = require("gulp");
-  var fs = require("fs");
-  var es = require("event-stream");
-  var clean = require("gulp-clean");
   var bump = require("gulp-bump");
+  var clean = require("gulp-clean")
+  var es = require("event-stream");
+  var fs = require("fs");
+  var gulp = require("gulp");
   var jshint = require("gulp-jshint");
   var jsoncombine = require("gulp-jsoncombine");
   var minifyCSS = require("gulp-minify-css");
-  var usemin = require("gulp-usemin");
-  var uglify = require("gulp-uglify");
-  var runSequence = require("gulp-run-sequence");
   var path = require("path");
   var rename = require("gulp-rename");
-
-  var cssFiles = [
-    "src/css/**/*.css"
-  ];
+  var runSequence = require("gulp-run-sequence");
+  var usemin = require("gulp-usemin");
+  var uglify = require("gulp-uglify");
 
   var jsFiles = [
     "src/js/**/*.js"
@@ -49,29 +45,12 @@
   });
 
   gulp.task("html", ["lint"], function () {
-    return gulp.src(["./src/*.html"])
+    return gulp.src(["src/*.html"])
       .pipe(usemin({
-        js: [uglify({ mangle:false, outSourceMap: true })] //disable mangle just for $routeProvider in controllers.js
+        css: [minifyCSS(), "concat"],
+        js: [uglify({ mangle: false, outSourceMap: true })]
       }))
       .pipe(gulp.dest("dist/"));
-  });
-
-  gulp.task("css", function () {
-    return gulp.src(cssFiles)
-      .pipe(minifyCSS({ keepBreaks:true }))
-      .pipe(rename(function(path) {
-        path.basename += ".min";
-      }))
-      .pipe(gulp.dest("dist/css"));
-  });
-
-  gulp.task("js", function () {
-    return gulp.src(jsFiles)
-      .pipe(uglify())
-      .pipe(rename(function(path) {
-        path.basename += ".min";
-      }))
-      .pipe(gulp.dest("dist/js"));
   });
 
   gulp.task("fonts", function() {
@@ -121,7 +100,7 @@
   });
 
   gulp.task("build", function (cb) {
-      runSequence(["clean"], ["html", "css", "js", "fonts", "i18n"], cb);
+      runSequence(["clean"], ["html", "fonts", "i18n"], cb);
   });
 
   gulp.task("default", function(cb) {

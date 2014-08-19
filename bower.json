@@ -22,8 +22,7 @@
     "test"
   ],
   "dependencies": {
-    "jquery": "1.11.0",
-    "bootstrap3-wysihtml5": "https://github.com/Rise-Vision/bootstrap3-wysihtml5.git",
-    "style-guide": "https://github.com/Rise-Vision/common-style.git"
+    "common-style": "https://github.com/Rise-Vision/common-style.git",
+    "rv-bootstrap3-wysihtml5": "https://github.com/Rise-Vision/bootstrap3-wysihtml5.git"
   }
 }
