@@ -54,8 +54,13 @@
   });
 
   gulp.task("fonts", function() {
-    return gulp.src("src/components/style-guide/dist/fonts/**/*")
+    return gulp.src("src/components/common-style/dist/fonts/**/*")
       .pipe(gulp.dest("dist/fonts"));
+  });
+
+  gulp.task("images", function() {
+    return gulp.src("src/components/rv-bootstrap-formhelpers/img/bootstrap-formhelpers-googlefonts.png")
+      .pipe(gulp.dest("dist/img"));
   });
 
   gulp.task("json-move", function() {
@@ -100,7 +105,7 @@
   });
 
   gulp.task("build", function (cb) {
-      runSequence(["clean"], ["html", "fonts", "i18n"], cb);
+      runSequence(["clean"], ["html", "fonts", "images", "i18n"], cb);
   });
 
   gulp.task("default", function(cb) {

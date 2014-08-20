@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="components/common-style/dist/css/rise.min.css">
   <link rel="stylesheet" href="components/spectrum/spectrum.css">
   <link rel="stylesheet" href="components/widget-settings-ui-components/dist/css/widget-settings-ui-components.min.css">
-  <link rel="stylesheet" href="components/rv-bootstrap3-wysihtml5/dist/css/bootstrap3-wysihtml5.min.css">
+  <link rel="stylesheet" href="components/bootstrap3-wysihtml5/dist/css/bootstrap3-wysihtml5.min.css">
   <link rel="stylesheet" href="components/rv-bootstrap-formhelpers/dist/css/rv-bootstrap-formhelpers.min.css">
   <link rel="stylesheet" href="components/bootstrap-select/bootstrap-select.min.css">
   <!-- endbuild -->
@@ -53,13 +53,13 @@
             <span data-i18n="save"></span>
             <i class="glyphicons white ok_2 icon-right"></i>
           </button>
-          <button type="button" class="btn btn-primary btn-fixed-width">
+          <button id="cancel" type="button" class="btn btn-primary btn-fixed-width">
             <span data-i18n="cancel"></span>
             <i class="glyphicons white remove_2 icon-right"></i>
           </button>
-          <a id="help" type="button" class="btn btn-fixed-width btn-rv-help">
+          <a type="button" href="http://www.risevision.com/help/users/what-are-gadgets/content/playlist-item-text-editor/" target="_blank" class="btn btn-fixed-width btn-rv-help">
             <span data-i18n="help"></span>
-            <i class="glyphicons white circle_question_mark icon-right"></i>
+            <i class="glyphicons circle_question_mark icon-right"></i>
           </a>
         </div>
       </div>
@@ -78,6 +78,12 @@
   <script src="//s3.amazonaws.com/rise-common-test/scripts/rise/common.js"></script>
   <script src="//rvashow2.appspot.com/gadgets/gadgets.min.js"></script>
 
+  <script>
+    $(document).ready(function() {
+      RiseVision.Text.Settings.init();
+    });
+  </script>
+
   <!-- build:js js/settings.min.js -->
   <script src="components/spectrum/spectrum.js"></script>
   <script src="components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
@@ -87,14 +93,8 @@
   <script src="components/bootstrap-form-components/dist/js/bootstrap-font-size-picker.js"></script>
   <script src="components/widget-settings-ui-components/dist/js/widget-settings-ui-components.js"></script>
   <script src="components/wysihtml5/dist/wysihtml5-0.4.0pre.js"></script>
-  <script src="components/rv-bootstrap3-wysihtml5/dist/js/bootstrap3-wysihtml5.min.js"></script>
+  <script src="components/bootstrap3-wysihtml5/dist/js/bootstrap3-wysihtml5.min.js"></script>
   <script src="js/settings.js"></script>
   <!-- endbuild -->
-
-  <script>
-  $(document).ready(function() {
-    RiseVision.Text.Settings.init();
-  });
-</script>
 </body>
 </html>
