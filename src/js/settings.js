@@ -15,8 +15,6 @@ RiseVision.Text.Settings = (function($, gadgets) {
     "//s3.amazonaws.com/rise-components/rv-bootstrap3-wysihtml5/0.0.3/dist/css/bootstrap3-wysihtml5-line-height.min.css";
   var ALIGNMENT_STYLESHEET =
     "//s3.amazonaws.com/rise-components/common-style/css/alignment.min.css";
-  var HELP_URL =
-    "http://www.risevision.com/help/users/what-are-gadgets/content/playlist-item-text-editor/";
 
   function _getSettings() {
     var settings = null, additionalParams = {};
@@ -46,10 +44,6 @@ RiseVision.Text.Settings = (function($, gadgets) {
 
     $("#cancel, .close, .widget-overlay").on("click", function() {
       gadgets.rpc.call("", "rscmd_closeSettings", null);
-    });
-
-    $("#help").on("click", function() {
-      window.open(HELP_URL, "_blank");
     });
 
     // When the user clicks in the editor, set toolbar to match text styles.
