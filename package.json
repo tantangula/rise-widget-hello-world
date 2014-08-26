@@ -33,7 +33,7 @@
     "gulp-rename": "~1.2.0",
     "gulp-run-sequence": "^0.3.2",
     "gulp-uglify": "~0.2.1",
-    "gulp-usemin": "~0.3.3",
+    "gulp-usemin": "0.3.7",
     "gulp-util": "^2.2.17",
     "gulp-watch": "^0.6.8",
     "jshint-stylish": "^0.2.0",

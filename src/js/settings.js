@@ -1,3 +1,5 @@
+/* global gadgets, i18n */
+
 var RiseVision = RiseVision || {};
 RiseVision.Text = {};
 RiseVision.Text.Settings = {};
@@ -7,7 +9,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
 
   var _editor = null;
   var $_editable = $("#editable");
-  var $_fontPicker, $_fontSizePicker;
+  var $_fontStyle, $_fontPicker, $_fontSizePicker;
   var $_textColor, $_highlightColor, $_backgroundColor;
   var FONT_SIZE_PICKER_STYLESHEET =
     "//s3.amazonaws.com/rise-components/bootstrap-form-components/0.1.8/dist/css/all.min.css";
@@ -48,9 +50,10 @@ RiseVision.Text.Settings = (function($, gadgets) {
 
     // When the user clicks in the editor, set toolbar to match text styles.
     $(".wysihtml5-sandbox").contents().find("body").on("click", function() {
-      var font = "", fontSize = "";
-      var color = "", highlightColor = "";
       var node = null, parentNode = null;
+      var isBold = false, isItalic = false, isUnderline = false;
+      var font = "", fontSize = "", lineHeight = "";
+      var color = "", highlightColor = "";
 
       // Hide color pickers.
       $_textColor.spectrum("hide");
@@ -68,23 +71,42 @@ RiseVision.Text.Settings = (function($, gadgets) {
           if (parentNode && parentNode.nodeType === 1) {
             // The parent node is not the editor element itself.
             if (parentNode.tagName.toLowerCase() !== "body") {
+              // Font Style
+              isBold = window.getComputedStyle(parentNode, null)
+                .getPropertyValue("font-weight") === "bold" ? true : false;
+              isItalic = window.getComputedStyle(parentNode, null)
+                .getPropertyValue("font-style") === "italic" ? true : false;
+              isUnderline = window.getComputedStyle(parentNode, null)
+                .getPropertyValue("text-decoration").indexOf("underline") !== -1 ? true : false;
+
+              $_fontStyle.data("plugin_fontStyle").setStyles({
+                "bold": isBold,
+                "italic": isItalic,
+                "underline": isUnderline
+              });
+
+              // Font
               font = window.getComputedStyle(parentNode, null)
                 .getPropertyValue("font-family");
-              fontSize = window.getComputedStyle(parentNode, null)
-                .getPropertyValue("font-size");
-              color = window.getComputedStyle(parentNode, null)
-                .getPropertyValue("color");
-              highlightColor = window.getComputedStyle(parentNode, null)
-                .getPropertyValue("background-color");
 
               if (font) {
                 $_fontPicker.data("plugin_fontPicker").setFont(font);
               }
 
+              // Font size
+              fontSize = window.getComputedStyle(parentNode, null)
+                .getPropertyValue("font-size");
+
               if (fontSize) {
                 $_fontSizePicker.data("plugin_fontSizePicker")
                   .setFontSize(fontSize);
               }
+
+              // Colors
+              color = window.getComputedStyle(parentNode, null)
+                .getPropertyValue("color");
+              highlightColor = window.getComputedStyle(parentNode, null)
+                .getPropertyValue("background-color");
 
               if (color) {
                 $_textColor.spectrum("set", color);
@@ -93,6 +115,13 @@ RiseVision.Text.Settings = (function($, gadgets) {
               if (highlightColor) {
                 $_highlightColor.spectrum("set", highlightColor);
               }
+            }
+            else {
+              $_fontStyle.data("plugin_fontStyle").setStyles({
+                "bold": false,
+                "italic": false,
+                "underline": false
+              });
             }
           }
         }
@@ -112,11 +141,12 @@ RiseVision.Text.Settings = (function($, gadgets) {
     });
 
     _editor = $_editable.data("wysihtml5").editor;
+    $_fontStyle = $(".emphasis");
     $_fontPicker = $(".font-picker");
     $_fontSizePicker = $(".font-size-picker");
-    $_textColor = $("#text-color");
-    $_highlightColor = $("#highlight-color");
-    $_backgroundColor = $("#background-color");
+    $_textColor = $(".text-color");
+    $_highlightColor = $(".highlight-color");
+    $_backgroundColor = $(".background-color");
 
     _bind();
 
@@ -124,7 +154,6 @@ RiseVision.Text.Settings = (function($, gadgets) {
 
     // Request additional parameters from the Viewer.
     gadgets.rpc.call("", "rscmd_getAdditionalParams", function(result) {
-      var prefs = new gadgets.Prefs();
       var util = RiseVision.Common.Utilities;
       var standardFont, googleFont, customFont;
       var textColor, highlightColor, backgroundColor;
@@ -145,7 +174,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
           }]);
         }
 
-        $.each($(result.data).find("span").andSelf(), function(index, value) {
+        $.each($(result.data).find("span").andSelf(), function() {
           standardFont = $(this).attr("data-standard-font");
           googleFont = $(this).attr("data-google-font");
           customFont = $(this).attr("data-custom-font");
@@ -187,7 +216,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
         });
       }
 
-      i18n.init(function(t) {
+      i18n.init(function() {
         $(".widget-wrapper").i18n().show();
 
         // Set buttons to be sticky only after wrapper is visible.
