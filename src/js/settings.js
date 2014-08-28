@@ -102,6 +102,13 @@ RiseVision.Text.Settings = (function($, gadgets) {
                   .setFontSize(fontSize);
               }
 
+              // Line Height
+              lineHeight = $(parentNode).data("line-height");
+
+              if (lineHeight) {
+                $(".line-height button").data("wysihtml5-command-value", lineHeight);
+              }
+
               // Colors
               color = window.getComputedStyle(parentNode, null)
                 .getPropertyValue("color");
