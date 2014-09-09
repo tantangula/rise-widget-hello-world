@@ -55,7 +55,9 @@ RiseVision.Text.Settings = (function($, gadgets) {
       var font = "", fontSize = "", lineHeight = "";
       var color = "", highlightColor = "";
 
-      // Hide color pickers.
+      // Hide any dropdowns that may be open when clicking in editor.
+      $(".open.alignment, .open.line-height, .font-picker .open.bfh-selectbox, " +
+        ".font-size-picker .open.bfh-fontsizes").removeClass("open");
       $_textColor.spectrum("hide");
       $_highlightColor.spectrum("hide");
       $_backgroundColor.spectrum("hide");
