@@ -112,11 +112,10 @@ RiseVision.Text.Settings = (function($, gadgets) {
               }
 
               // Line Height
-              lineHeight = $(parentNode).data("line-height");
+              lineHeight = $(parentNode).data("line-height") ?
+                $(parentNode).data("line-height") : 1;
 
-              if (lineHeight) {
-                $(".line-height button").data("wysihtml5-command-value", lineHeight);
-              }
+              $(".line-height button").data("wysihtml5-command-value", lineHeight);
 
               // Colors
               color = window.getComputedStyle(parentNode, null)
@@ -133,11 +132,15 @@ RiseVision.Text.Settings = (function($, gadgets) {
               }
             }
             else {
+              // Reset font style.
               $_fontStyle.data("plugin_fontStyle").setStyles({
                 "bold": false,
                 "italic": false,
                 "underline": false
               });
+
+              // Reset line height.
+              $(".line-height button").data("wysihtml5-command-value", 1);
             }
           }
         }
