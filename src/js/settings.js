@@ -40,6 +40,18 @@ RiseVision.Text.Settings = (function($, gadgets) {
   }
 
   function _bind() {
+    $(".font-picker").on("show.bfhselectbox", function() {
+      _closeDropdowns();
+    });
+
+    $(".font-size-picker, .line-height, .alignment").on("show.bs.dropdown", function() {
+      _closeDropdowns();
+    });
+
+    $(".text-color, .highlight-color, .background-color").on("beforeShow", function() {
+      _closeDropdowns();
+    });
+
     $("#save").on("click", function() {
       _getSettings();
     });
@@ -55,12 +67,7 @@ RiseVision.Text.Settings = (function($, gadgets) {
       var font = "", fontSize = "", lineHeight = "";
       var color = "", highlightColor = "";
 
-      // Hide any dropdowns that may be open when clicking in editor.
-      $(".open.alignment, .open.line-height, .font-picker .open.bfh-selectbox, " +
-        ".font-size-picker .open.bfh-fontsizes").removeClass("open");
-      $_textColor.spectrum("hide");
-      $_highlightColor.spectrum("hide");
-      $_backgroundColor.spectrum("hide");
+      _closeDropdowns();
 
       node = _editor.composer.selection.getSelectedNode();
 
@@ -136,6 +143,16 @@ RiseVision.Text.Settings = (function($, gadgets) {
         }
       }
     });
+  }
+
+  // Close all open dropdowns.
+  function _closeDropdowns() {
+    $(".open.alignment, .font-picker .open.bfh-selectbox, " +
+      ".font-size-picker .open.bfh-fontsizes, .open.line-height")
+      .removeClass("open");
+    $_textColor.spectrum("hide");
+    $_highlightColor.spectrum("hide");
+    $_backgroundColor.spectrum("hide");
   }
 
   function init() {
