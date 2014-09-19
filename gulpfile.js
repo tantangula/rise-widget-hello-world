@@ -3,19 +3,19 @@
 (function () {
   "use strict";
 
-  var bump = require("gulp-bump");
-  var clean = require("gulp-clean")
-  var es = require("event-stream");
-  var fs = require("fs");
   var gulp = require("gulp");
+  var fs = require("fs");
+  var es = require("event-stream");
+  var rimraf = require("gulp-rimraf");
+  var bump = require("gulp-bump");
   var jshint = require("gulp-jshint");
   var jsoncombine = require("gulp-jsoncombine");
   var minifyCSS = require("gulp-minify-css");
-  var path = require("path");
-  var rename = require("gulp-rename");
-  var runSequence = require("gulp-run-sequence");
   var usemin = require("gulp-usemin");
   var uglify = require("gulp-uglify");
+  var runSequence = require("run-sequence");
+  var path = require("path");
+  var rename = require("gulp-rename");
 
   var jsFiles = [
     "src/js/**/*.js"
@@ -32,10 +32,17 @@
       .pipe(gulp.dest("./"));
   });
 
-  gulp.task("clean", function() {
-    return gulp.src("dist", { read: false })
-      .pipe(clean({ force: true }));
+  gulp.task("clean-dist", function () {
+    return gulp.src("dist", {read: false})
+      .pipe(rimraf());
   });
+
+  gulp.task("clean-tmp", function () {
+    return gulp.src("tmp", {read: false})
+      .pipe(rimraf());
+  });
+
+  gulp.task("clean", ["clean-dist", "clean-tmp"]);
 
   gulp.task("lint", function() {
     return gulp.src(jsFiles)

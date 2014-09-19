@@ -13,6 +13,12 @@
   <link rel="stylesheet" href="components/bootstrap-select/bootstrap-select.min.css">
   <!-- endbuild -->
 
+  <!-- build:css css/editor.min.css -->
+  <link rel="stylesheet" href="components/common-style/dist/css/alignment.min.css">
+  <link rel="stylesheet" href="components/bootstrap-form-components/dist/css/all.min.css">
+  <link rel="stylesheet" href="components/bootstrap3-wysihtml5/dist/css/bootstrap3-wysihtml5-line-height.min.css">
+  <!-- endbuild -->
+
   <style>
   html, body {
     background-color: transparent;
@@ -34,68 +40,73 @@
   }
 </style>
 </head>
-<body>
-  <div class="widget-overlay"></div>
-  <div class="widget-wrapper container modal-content">
-    <div class="modal-header">
-      <h2 id="title" data-i18n="[prepend]settings">
-        <button type="button" ng-click="closeModal()" class="close">
-          <span>&times;</span>
-          <span class="sr-only">Close</span>
-        </button>
-      </h2>
-      <div class="sticky-wrapper">
-        <div class="btn-toolbar sticky-buttons">
-          <button id="save" type="button" class="btn btn-success btn-fixed-width">
-            <span data-i18n="save"></span>
-            <i class="fa fa-white fa-check icon-right"></i>
-          </button>
-          <button id="cancel" type="button" class="btn btn-primary btn-fixed-width">
-            <span data-i18n="cancel"></span>
-            <i class="fa fa-white fa-times icon-right"></i>
-          </button>
-          <a type="button" href="http://www.risevision.com/help/users/what-are-gadgets/content/playlist-item-text-editor/" target="_blank" class="btn btn-fixed-width btn-rv-help">
-            <span data-i18n="help"></span>
-            <i class="fa fa-question-circle icon-right"></i>
-          </a>
-          <a type="button" class="btn btn-fixed-width btn-rv-help" href="https://github.com/Rise-Vision/widget-text" target="_blank">
-            <span data-i18n="contribute"></span>
-            <i class="fa fa-github fa-lg"></i>
-          </a>
+<body ng-app="risevision.widget.text.settings" ng-controller="settingsController">
+  <div class="widget">
+    <div class="overlay"></div>
+    <div class="settings">
+      <div class="settings-center">
+        <div class="wrapper container modal-content" ng-controller="textSettingsController">
+          <div class="modal-header">
+            <h2 id="settings-title"> {{"settings" | translate }}
+              <button type="button" ng-click="closeModal()" class="close">
+                <span>&times;</span>
+                <span class="sr-only">Close</span>
+              </button>
+            </h2>
+            <div class="sticky-wrapper">
+              <div class="btn-toolbar sticky-buttons">
+                <button id="save" type="button" class="btn btn-success btn-fixed-width">
+                  {{"common.buttons.save" | translate}}
+                  <i class="fa fa-white fa-check icon-right"></i>
+                </button>
+                <button id="cancel" type="button" class="btn btn-primary btn-fixed-width">
+                  {{"common.buttons.cancel" | translate}}
+                  <i class="fa fa-white fa-times icon-right"></i>
+                </button>
+                <a type="button" href="http://www.risevision.com/help/users/what-are-gadgets/content/playlist-item-text-editor/" target="_blank" class="btn btn-fixed-width btn-rv-help">
+                  {{"common.buttons.help" | translate}}
+                  <i class="fa fa-question-circle icon-right"></i>
+                </a>
+                <a type="button" class="btn btn-rv-help btn-fixed-width" href="https://github.com/Rise-Vision/widget-text" target="_blank">
+                  {{"common.buttons.contribute" | translate}}
+                  <i class="fa fa-github fa-lg "></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div id="settings-alert" class="alert alert-danger" ng-show="onError"></div>
+          <form role="form">
+            <textarea wysihtml5 id="editable" class="form-control" name="editable" stylesheets="stylesheets"></textarea>
+          </form>
         </div>
       </div>
     </div>
-    <div id="errors" class="alert alert-danger"></div>
-    <form role="form">
-      <div id="container">
-        <textarea id="editable" class="form-control" name="editable"></textarea>
-      </div>
-    </form>
   </div>
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="//s3.amazonaws.com/rise-common-test/scripts/i18next/i18next.min.js"></script>
-  <script src="//s3.amazonaws.com/rise-common-test/scripts/sticky/jquery.sticky.min.js"></script>
-  <script src="//s3.amazonaws.com/rise-common-test/scripts/rise/common.js"></script>
-  <script src="//rvashow2.appspot.com/gadgets/gadgets.min.js"></script>
-
-  <script>
-    $(document).ready(function() {
-      RiseVision.Text.Settings.init();
-    });
-  </script>
-
   <!-- build:js js/settings.min.js -->
-  <script src="components/spectrum/spectrum.js"></script>
+  <script src="components/angular/angular.js"></script>
+  <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="components/angular-translate/angular-translate.js"></script>
+  <script src="components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+  <script src="components/jquery/dist/jquery.min.js"></script>
   <script src="components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
   <script src="components/rv-bootstrap-formhelpers/dist/js/rv-bootstrap-formhelpers.js"></script>
   <script src="components/bootstrap-select/bootstrap-select.min.js"></script>
   <script src="components/bootstrap-form-components/dist/js/bootstrap-font-picker.js"></script>
   <script src="components/bootstrap-form-components/dist/js/bootstrap-font-size-picker.js"></script>
+  <script src="components/spectrum/spectrum.js"></script>
+  <script src="components/widget-settings-ui-core/dist/widget-settings-ui-core.js"></script>
   <script src="components/widget-settings-ui-components/dist/js/widget-settings-ui-components.js"></script>
+  <script src="components/widget-settings-ui-components/dist/js/angular/tooltip.js"></script>
   <script src="components/wysihtml5/dist/wysihtml5-0.4.0pre.js"></script>
   <script src="components/bootstrap3-wysihtml5/dist/js/bootstrap3-wysihtml5.min.js"></script>
-  <script src="js/settings.js"></script>
+  <script src="components/bootstrap3-wysihtml5/src/js/angular/dtv-bootstrap3-wysihtml5.js"></script>
+  <script src="js/settings-app.js"></script>
+  <script src="js/ctr-text-settings.js"></script>
   <!-- endbuild -->
+
+  <script src="//s3.amazonaws.com/rise-common-test/scripts/i18next/i18next.min.js"></script>
+  <script src="//s3.amazonaws.com/rise-common-test/scripts/sticky/jquery.sticky.min.js"></script>
+  <script src="//rvashow2.appspot.com/gadgets/gadgets.min.js"></script>
 </body>
 </html>
