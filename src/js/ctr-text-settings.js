@@ -1,12 +1,13 @@
 angular.module("risevision.widget.text.settings")
   .controller("textSettingsController", ["$scope",
     function ($scope) {
-      $scope.stylesheets = ["css/editor.min.css"];
+      $scope.stylesheets = ["../dist/css/editor.min.css"];
     }
   ])
   .value("defaultSettings", {
     params: {},
     additionalParams: {
-      data: {}
+      data: {},
+      scroll: {}
     }
   });

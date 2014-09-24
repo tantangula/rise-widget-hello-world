@@ -76,7 +76,9 @@
           </div>
           <div id="settings-alert" class="alert alert-danger" ng-show="onError"></div>
           <form role="form">
-            <textarea wysihtml5 id="editable" class="form-control" name="editable" stylesheets="stylesheets"></textarea>
+            <scroll-setting scroll="settings.additionalParams.scroll"></scroll-setting>
+            <textarea wysihtml5 id="editable" class="form-control" name="editable" stylesheets="stylesheets"
+              data="settings.additionalParams.data" background="settings.additionalParams.background"></textarea>
           </form>
         </div>
       </div>
@@ -98,9 +100,10 @@
   <script src="components/widget-settings-ui-core/dist/widget-settings-ui-core.js"></script>
   <script src="components/widget-settings-ui-components/dist/js/widget-settings-ui-components.js"></script>
   <script src="components/widget-settings-ui-components/dist/js/angular/tooltip.js"></script>
+  <script src="components/widget-settings-ui-components/dist/js/angular/scroll-setting.js"></script>
   <script src="components/wysihtml5/dist/wysihtml5-0.4.0pre.js"></script>
   <script src="components/bootstrap3-wysihtml5/dist/js/bootstrap3-wysihtml5.min.js"></script>
-  <script src="components/bootstrap3-wysihtml5/src/js/angular/dtv-bootstrap3-wysihtml5.js"></script>
+  <script src="components/bootstrap3-wysihtml5/dist/js/angular/dtv-bootstrap3-wysihtml5.min.js"></script>
   <script src="js/settings-app.js"></script>
   <script src="js/ctr-text-settings.js"></script>
   <!-- endbuild -->

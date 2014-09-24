@@ -1,6 +1,7 @@
 angular.module("risevision.widget.text.settings", [
   "risevision.widget.common",
   "risevision.widget.common.translate",
+  "risevision.widget.common.scroll-setting",
   "risevision.widget.common.tooltip",
   "risevision.widget.common.wysihtml5"
 ]);
