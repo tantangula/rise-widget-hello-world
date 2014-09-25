@@ -1,4 +1,5 @@
 angular.module("risevision.widget.text.settings", [
+  "risevision.widget.text.config",
   "risevision.widget.common",
   "risevision.widget.common.translate",
   "risevision.widget.common.scroll-setting",
