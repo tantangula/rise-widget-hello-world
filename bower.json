@@ -18,8 +18,9 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "components",
-    "test"
+    "src/components",
+    "test",
+    "reports"
   ],
   "dependencies": {
     "angular": "1.2.18",
