@@ -1,4 +1,6 @@
 src/components/
+src/*-e2e.html
+src/config/config.js
 node_modules/
 dist/
 reports/
