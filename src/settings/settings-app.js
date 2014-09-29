@@ -4,6 +4,7 @@ angular.module("risevision.widget.text.settings", [
   "risevision.widget.common.translate",
   "risevision.widget.common.scroll-setting",
   "risevision.widget.common.tooltip",
+  "risevision.widget.common.widget-button-toolbar",
   "risevision.widget.common.wysihtml5"
 ]);
 
@@ -13,6 +14,7 @@ angular.module("risevision.widget.common.translate", ["pascalprecht.translate"])
       prefix: "locales/",
       suffix: "/translation.json"
     });
+
     $translateProvider.determinePreferredLanguage();
 
     if ($translateProvider.preferredLanguage().indexOf("en_") === 0){
