@@ -1,12 +1,46 @@
-# Text Widget
+# Text Widget [![Build Status](http://devtools1.risevision.com:8080/job/Widget-Text-Master-Build/badge/icon)](http://devtools1.risevision.com:8080/job/Widget-Text-Master-Build/)
 
 ## Introduction
 
-The Text Widget makes it easy to create textual content using a WYSIWYG editor.
+The Text Widget makes it easy to create appealing text using a WYSIWYG editor.
 
 Text Widget works in conjunction with [Rise Vision](http://www.risevision.com), the [digital signage management application](http://rva.risevision.com/) that runs on [Google Cloud](https://cloud.google.com).
 
 At this time Chrome is the only browser that this project and Rise Vision supports.
+
+## Built With
+- AngularJS
+- npm
+- Bower
+- Gulp
+- Karma and Mocha for testing
+
+## Development
+
+### Local Development Environment Setup and Installation
+* The Widget can be installed by executing the following commands:
+```bash
+git clone https://github.com/Rise-Vision/widget-text.git
+cd widget-text
+npm install
+bower install
+gulp build
+```
+
+### Run Local
+To preview Widgets locally, you'll have to run the [Widget Preview](https://github.com/Rise-Vision/widget-preview) app available [here](http://192.254.220.36/~rvi/widget-preview/).
+
+### Dependencies
+* Node.js
+* npm
+* Bower
+* Gulp
+
+### Testing
+Execute the following command to run both end-to-end and unit tests:
+```bash
+gulp test
+```
 
 ## Submitting Issues
 If you encounter problems or find defects we really want to hear about them. If you could take the time to add them as issues to this Repository it would be most appreciated. When reporting issues please use the following format where applicable:
