@@ -17,15 +17,40 @@ RiseVision.Text.Controller = (function(gadgets) {
 
       var data = value.data;
 
-      $("#container").html(data);
+      $(".page").html(data);
+
+      $("#container").autoScroll({
+        scrollBy: value.scroll.by,
+        scrollSpeed: value.scroll.speed,
+        scrollResumes: value.scroll.pause
+      })
+      .on("done", function() {
+        doneEvent();
+      });
     }
 
     readyEvent();
   }
 
   function readyEvent() {
-    gadgets.rpc.call("", "rsevent_ready", null, id, false, false, false, true,
-      false);
+    gadgets.rpc.call("", "rsevent_ready", null, id, true, true, true, true,
+      true);
+  }
+
+  function play() {
+    $("#container").data("plugin_autoScroll").play();
+  }
+
+  function pause() {
+    $("#container").data("plugin_autoScroll").pause();
+  }
+
+  function stop() {
+    pause();
+  }
+
+  function doneEvent() {
+    gadgets.rpc.call("", "rsevent_done", null, id);
   }
 
   /*
@@ -43,6 +68,10 @@ RiseVision.Text.Controller = (function(gadgets) {
 
     // Get additional parameters.
     if (id) {
+      gadgets.rpc.register("rscmd_play_" + id, play);
+      gadgets.rpc.register("rscmd_pause_" + id, pause);
+      gadgets.rpc.register("rscmd_stop_" + id, stop);
+
       gadgets.rpc.register("rsparam_set_" + id, getAdditionalParams);
       gadgets.rpc.call("", "rsparam_get", null, id, "additionalParams");
     }
