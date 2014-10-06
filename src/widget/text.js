@@ -3,7 +3,7 @@
 var RiseVision = RiseVision || {};
 RiseVision.Text = {};
 
-RiseVision.Text.Controller = (function(gadgets) {
+RiseVision.Text = (function(gadgets) {
   "use strict";
 
   var id = "";
@@ -12,20 +12,32 @@ RiseVision.Text.Controller = (function(gadgets) {
   /*
    *  Private Methods
    */
+  function ready() {
+    gadgets.rpc.call("", "rsevent_ready", null, id, true, true, true, true,
+      true);
+  }
+
+  function done() {
+    gadgets.rpc.call("", "rsevent_done", null, id);
+  }
+
+  /*
+   *  Public Methods
+   */
   function getAdditionalParams(name, value) {
     if (name === "additionalParams" && value) {
       var params = JSON.parse(value);
-
       var data = params.data;
+      var googleFont = "", customFont = "";
+      var rules = [];
 
       $("#container").css("background-color", params.background || "transparent");
       $(".page").html(data);
 
       // Load custom and Google fonts.
-      $.each($(data).find("span").andBack(), function() {
-        var googleFont = $(this).attr("data-google-font");
-        var customFont = $(this).attr("data-custom-font");
-        var rules = [];
+      $.each($(data).find("span").addBack(), function() {
+        googleFont = $(this).attr("data-google-font");
+        customFont = $(this).attr("data-custom-font");
 
         if (googleFont) {
           utils.loadGoogleFont(googleFont);
@@ -42,22 +54,17 @@ RiseVision.Text.Controller = (function(gadgets) {
           rules.push(".wysiwyg-font-family-" + customFont.replace(/ /g, "-")
             .toLowerCase() + " { font-family: '" + customFont + "', serif; }");
         }
-
-        utils.addCSSRules(rules);
       });
+
+      utils.addCSSRules(rules);
 
       $("#container").autoScroll(params.scroll)
       .on("done", function() {
-        doneEvent();
+        done();
       });
     }
 
-    readyEvent();
-  }
-
-  function readyEvent() {
-    gadgets.rpc.call("", "rsevent_ready", null, id, true, true, true, true,
-      true);
+    ready();
   }
 
   function play() {
@@ -72,45 +79,10 @@ RiseVision.Text.Controller = (function(gadgets) {
     pause();
   }
 
-  function doneEvent() {
-    gadgets.rpc.call("", "rsevent_done", null, id);
-  }
-
-  /*
-   *  Public Methods
-   */
-  function init() {   // jshint ignore:line
-    var prefs = new gadgets.Prefs();
-    var background = prefs.getString("background");
-
-    id = prefs.getString("id");
-
-    if (background) {
-      document.body.style.background = background;
-    }
-
-    // Get additional parameters.
-    if (id) {
-      gadgets.rpc.register("rscmd_play_" + id, play);
-      gadgets.rpc.register("rscmd_pause_" + id, pause);
-      gadgets.rpc.register("rscmd_stop_" + id, stop);
-
-      gadgets.rpc.register("rsparam_set_" + id, getAdditionalParams);
-      gadgets.rpc.call("", "rsparam_get", null, id, "additionalParams");
-    }
-  }
-
   return {
-    init: init
+    getAdditionalParams: getAdditionalParams,
+    play               : play,
+    pause              : pause,
+    stop               : stop
   };
 })(gadgets);
-
-// TODO: Add Analytics code.
-
-// TODO: Enable once development complete.
-// No right clicks.
-// window.oncontextmenu = function() {
-//   return false;
-// };
-
-RiseVision.Text.Controller.init();
