@@ -7,23 +7,46 @@ RiseVision.Text.Controller = (function(gadgets) {
   "use strict";
 
   var id = "";
+  var utils = RiseVision.Common.Utilities;
 
   /*
    *  Private Methods
    */
   function getAdditionalParams(name, value) {
     if (name === "additionalParams" && value) {
-      value = JSON.parse(value);
+      var params = JSON.parse(value);
 
-      var data = value.data;
+      var data = params.data;
 
+      $("#container").css("background-color", params.background || "transparent");
       $(".page").html(data);
 
-      $("#container").autoScroll({
-        scrollBy: value.scroll.by,
-        scrollSpeed: value.scroll.speed,
-        scrollResumes: value.scroll.pause
-      })
+      // Load custom and Google fonts.
+      $.each($(data).find("span").andBack(), function() {
+        var googleFont = $(this).attr("data-google-font");
+        var customFont = $(this).attr("data-custom-font");
+        var rules = [];
+
+        if (googleFont) {
+          utils.loadGoogleFont(googleFont);
+
+          // Add CSS for the Google font plus a fallback.
+          rules.push(".wysiwyg-font-family-" + googleFont.replace(/ /g, "-")
+            .toLowerCase() + " { font-family: '" + googleFont + "', serif; }");
+        }
+
+        if (customFont) {
+          utils.loadCustomFont(customFont, $(this).attr("data-custom-font-url"));
+
+          // Add CSS for the custom font plus a fallback.
+          rules.push(".wysiwyg-font-family-" + customFont.replace(/ /g, "-")
+            .toLowerCase() + " { font-family: '" + customFont + "', serif; }");
+        }
+
+        utils.addCSSRules(rules);
+      });
+
+      $("#container").autoScroll(params.scroll)
       .on("done", function() {
         doneEvent();
       });

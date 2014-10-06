@@ -46,7 +46,7 @@
           "scroll": {
             "by": "none",
             "speed": "medium",
-            "pause": "5"
+            "pause": 5
           }
         }
       };
