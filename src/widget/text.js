@@ -6,19 +6,19 @@ RiseVision.Text = {};
 RiseVision.Text = (function(gadgets) {
   "use strict";
 
-  var id = "";
+  var prefs = new gadgets.Prefs();
   var utils = RiseVision.Common.Utilities;
 
   /*
    *  Private Methods
    */
   function ready() {
-    gadgets.rpc.call("", "rsevent_ready", null, id, true, true, true, true,
-      true);
+    gadgets.rpc.call("", "rsevent_ready", null, prefs.getString("id"), true,
+      true, true, true, true);
   }
 
   function done() {
-    gadgets.rpc.call("", "rsevent_done", null, id);
+    gadgets.rpc.call("", "rsevent_done", null, prefs.getString("id"));
   }
 
   /*
