@@ -31,8 +31,10 @@ RiseVision.Text = (function(gadgets) {
       var googleFont = "", customFont = "";
       var rules = [];
 
-      $("#container").css("background-color", params.background || "transparent");
-      $(".page").html(data);
+      // Set height of container to that of Placeholder so that scrolling works.
+      $("#container").height(prefs.getInt("rsH"))
+        .css("background-color", params.background || "transparent");
+      $(".page").width(prefs.getInt("rsW")).html(data);
 
       // Load custom and Google fonts.
       $.each($(data).find("span").addBack(), function() {
