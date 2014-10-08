@@ -71,6 +71,12 @@
       .pipe(gulp.dest("dist/"));
   });
 
+  gulp.task("source-dev", ["lint"], function () {
+    return gulp.src(["./src/*.html"])
+      .pipe(usemin())
+      .pipe(gulp.dest("dist/"));
+  });
+
   gulp.task("fonts", function() {
     return gulp.src("src/components/common-style/dist/fonts/**/*")
       .pipe(gulp.dest("dist/fonts"));
@@ -124,6 +130,10 @@
 
   gulp.task("build", function (cb) {
     runSequence(["clean", "config"], ["source", "fonts", "images", "i18n"], cb);
+  });
+
+  gulp.task("build-dev", function (cb) {
+    runSequence(["clean", "config"], ["source-dev", "fonts", "images", "i18n"], cb);
   });
 
   gulp.task("webdriver_update", factory.webdriveUpdate());
