@@ -28,9 +28,7 @@
     gadgets.rpc.call("", "rsparam_get", null, id, "additionalParams");
   }
 
-
-  // TODO: Enable once development complete.
-  // window.oncontextmenu = function () {
-  //   return false;
-  // };
+  window.oncontextmenu = function () {
+    return false;
+  };
 })(window, gadgets);
