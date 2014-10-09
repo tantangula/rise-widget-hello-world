@@ -28,7 +28,6 @@ RiseVision.Text = (function(gadgets) {
     if (name === "additionalParams" && value) {
       var params = JSON.parse(value);
       var data = params.data;
-      var googleFont = "", customFont = "";
       var rules = [];
 
       // Set height of container to that of Placeholder so that scrolling works.
@@ -36,8 +35,12 @@ RiseVision.Text = (function(gadgets) {
         .css("background-color", params.background || "transparent");
       $(".page").width(prefs.getInt("rsW")).html(data);
 
-      // Load custom and Google fonts.
       $.each($(data).find("span").addBack(), function() {
+        var googleFont = "", customFont = "";
+        var textColor = "", highlightColor = "";
+        var classes = [];
+
+        // Load Google font and custom fonts.
         googleFont = $(this).attr("data-google-font");
         customFont = $(this).attr("data-custom-font");
 
@@ -55,6 +58,23 @@ RiseVision.Text = (function(gadgets) {
           // Add CSS for the custom font plus a fallback.
           rules.push(".wysiwyg-font-family-" + customFont.replace(/ /g, "-")
             .toLowerCase() + " { font-family: '" + customFont + "', serif; }");
+        }
+
+        // Set text and highlight colours.
+        classes = this.className.split(" ");
+        textColor = $(this).attr("data-text-color");
+        highlightColor = $(this).attr("data-highlight-color");
+
+        /* Check if any of the classes start with 'wysiwyg-text-color' or
+           'wysiwyg-highlight-color'. */
+        for (var i = 0, length = classes.length; i < length; i++) {
+          if (classes[i].indexOf("wysiwyg-text-color") === 0) {
+            rules.push("." + classes[i] + " { color: " + textColor + "; }");
+          }
+          else if (classes[i].indexOf("wysiwyg-highlight-color") === 0) {
+            rules.push("." + classes[i] + " { background-color: " +
+              highlightColor + "; }");
+          }
         }
       });
 
