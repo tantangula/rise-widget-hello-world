@@ -36,28 +36,31 @@ RiseVision.Text = (function(gadgets) {
       $(".page").width(prefs.getInt("rsW")).html(data);
 
       $.each($("<div/>").html(data).find("span").addBack(), function() {
-        var googleFont = "", customFont = "";
+        var standardFont = $(this).attr("data-standard-font");
+        var googleFont = $(this).attr("data-google-font");
+        var customFont = $(this).attr("data-custom-font");
         var textColor = "", highlightColor = "";
         var classes = [];
 
-        // Load Google font and custom fonts.
-        googleFont = $(this).attr("data-google-font");
-        customFont = $(this).attr("data-custom-font");
+        // Add CSS for standard fonts.
+        if (standardFont) {
+          rules.push(createFontRule(standardFont));
+        }
 
+        // Load Google font.
         if (googleFont) {
           utils.loadGoogleFont(googleFont);
 
           // Add CSS for the Google font plus a fallback.
-          rules.push(".wysiwyg-font-family-" + googleFont.replace(/ /g, "-")
-            .toLowerCase() + " { font-family: '" + googleFont + "', serif; }");
+          rules.push(createFontRule(googleFont));
         }
 
+        // Load custom font.
         if (customFont) {
           utils.loadCustomFont(customFont, $(this).attr("data-custom-font-url"));
 
           // Add CSS for the custom font plus a fallback.
-          rules.push(".wysiwyg-font-family-" + customFont.replace(/ /g, "-")
-            .toLowerCase() + " { font-family: '" + customFont + "', serif; }");
+          rules.push(createFontRule(customFont));
         }
 
         // Set text and highlight colours.
@@ -87,6 +90,11 @@ RiseVision.Text = (function(gadgets) {
     }
 
     ready();
+  }
+
+  function createFontRule(font) {
+    return ".wysiwyg-font-family-" + font.replace(/ /g, "-").toLowerCase() +
+      " { font-family: '" + font + "', serif; }";
   }
 
   function play() {
