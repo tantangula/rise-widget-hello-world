@@ -35,7 +35,7 @@ RiseVision.Text = (function(gadgets) {
         .css("background-color", params.background || "transparent");
       $(".page").width(prefs.getInt("rsW")).html(data);
 
-      $.each($(data).find("span").addBack(), function() {
+      $.each($("<div/>").html(data).find("span").addBack(), function() {
         var googleFont = "", customFont = "";
         var textColor = "", highlightColor = "";
         var classes = [];
