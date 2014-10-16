@@ -13,7 +13,7 @@
   },
   "author": "Rise Vision",
   "license": "GPLv3",
-  "bucket": "Widget-Text",
+  "bucket": "widget-text",
   "homepage": "https://github.com/Rise-Vision/widget-text",
   "devDependencies": {
     "chai-as-promised": "~4.1.1",
