@@ -1,4 +1,4 @@
-# Text Widget [![Build Status](http://devtools1.risevision.com:8080/job/Widget-Text-Master-Build/badge/icon)](http://devtools1.risevision.com:8080/job/Widget-Text-Master-Build/)
+# Text Widget [![Circle CI](https://circleci.com/gh/Rise-Vision/widget-text/tree/master.svg?style=svg)](https://circleci.com/gh/Rise-Vision/widget-text/tree/master)
 
 ## Introduction
 
