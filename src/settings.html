@@ -40,7 +40,7 @@
       <div class="settings-center">
         <div class="wrapper container modal-content" ng-controller="textSettingsController">
           <div class="modal-header">
-            <h2 id="settings-title"> {{"settings" | translate }}
+            <h2 id="settings-title"> {{"widget-text.settings" | translate }}
               <button type="button" ng-click="closeSettings()" class="close">
                 <span>&times;</span>
                 <span class="sr-only">Close</span>
@@ -69,6 +69,7 @@
   <!-- build:js js/settings.min.js -->
   <script src="components/angular-translate/angular-translate.js"></script>
   <script src="components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+  <script src="components/rv-common-i18n/dist/i18n.js"></script>
   <script src="components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
   <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
   <script src="components/rv-bootstrap-formhelpers/dist/js/rv-bootstrap-formhelpers.js"></script>
