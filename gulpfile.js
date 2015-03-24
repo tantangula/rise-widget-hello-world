@@ -4,22 +4,26 @@
   "use strict";
 
   var bump = require("gulp-bump");
+  var del = require("del");
   var factory = require("widget-tester").gulpTaskFactory;
   var gulp = require("gulp");
   var jshint = require("gulp-jshint");
   var minifyCSS = require("gulp-minify-css");
   var path = require("path");
   var rename = require("gulp-rename");
-  var rimraf = require("gulp-rimraf");
   var runSequence = require("run-sequence");
   var sourcemaps = require("gulp-sourcemaps");
   var uglify = require("gulp-uglify");
   var usemin = require("gulp-usemin");
 
-  var jsFiles = [
-    "src/**/*.js",
-    "!./src/components/**/*"
-  ];
+  var htmlFiles = [
+      "./src/settings.html",
+      "./src/widget.html"
+    ],
+    jsFiles = [
+      "src/**/*.js",
+      "!./src/components/**/*"
+    ];
 
   gulp.task("bump", function() {
     return gulp.src(["./package.json", "./bower.json"])
@@ -27,19 +31,11 @@
       .pipe(gulp.dest("./"));
   });
 
-  gulp.task("clean-dist", function () {
-    return gulp.src("dist", {read: false})
-      .pipe(rimraf());
+  gulp.task("clean", function (cb) {
+    del(["./dist/**"], cb);
   });
 
-  gulp.task("clean-tmp", function () {
-    return gulp.src("tmp", {read: false})
-      .pipe(rimraf());
-  });
-
-  gulp.task("clean", ["clean-dist", "clean-tmp"]);
-
-   gulp.task("config", function() {
+  gulp.task("config", function() {
     var env = process.env.NODE_ENV || "dev";
 
     return gulp.src(["./src/config/" + env + ".js"])
@@ -63,6 +59,18 @@
       .pipe(gulp.dest("dist/"));
   });
 
+  gulp.task("unminify", function () {
+    return gulp.src(htmlFiles)
+      .pipe(usemin({
+        css: [rename(function (path) {
+          path.basename = path.basename.substring(0, path.basename.indexOf(".min"))
+        }), gulp.dest("dist")],
+        js: [rename(function (path) {
+          path.basename = path.basename.substring(0, path.basename.indexOf(".min"))
+        }), gulp.dest("dist")]
+      }))
+  });
+
   gulp.task("source-dev", ["lint"], function () {
     return gulp.src(["./src/*.html"])
       .pipe(usemin())
@@ -81,11 +89,11 @@
 
   gulp.task("i18n", function(cb) {
     return gulp.src(["src/components/rv-common-i18n/dist/locales/**/*"])
-      .pipe(gulp.dest("dist/locales"));    
+      .pipe(gulp.dest("dist/locales"));
   });
 
   gulp.task("build", function (cb) {
-    runSequence(["clean", "config"], ["source", "fonts", "images", "i18n"], cb);
+    runSequence(["clean", "config"], ["source", "fonts", "images", "i18n"], ["unminify"], cb);
   });
 
   gulp.task("build-dev", function (cb) {
@@ -97,10 +105,9 @@
   gulp.task("e2e:server", ["config", "html:e2e"], factory.testServer());
   gulp.task("e2e:server-close", factory.testServerClose());
   gulp.task("test:e2e:settings", ["webdriver_update", "html:e2e", "e2e:server"], factory.testE2EAngular());
-  gulp.task("test:metrics", factory.metrics());
 
   gulp.task("test", function(cb) {
-    runSequence("test:e2e:settings", "e2e:server-close", "test:metrics", cb);
+    runSequence("test:e2e:settings", "e2e:server-close", cb);
   });
 
   gulp.task("watch", function() {
