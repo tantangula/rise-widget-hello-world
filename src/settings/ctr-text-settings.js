@@ -1,14 +1,11 @@
 angular.module("risevision.widget.text.settings")
-  .controller("textSettingsController", ["$scope", "stylesheets",
-    function ($scope, stylesheets) {
-      $scope.stylesheets = [stylesheets];
+  .controller("textSettingsController", ["$scope",
+    function ($scope) {
     }
   ])
   .value("defaultSettings", {
     "params": {},
     "additionalParams": {
-      "data": "",
-      "background": "",
-      "scroll": {}
+      "message": ""
     }
   });
