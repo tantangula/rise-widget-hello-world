@@ -7,3 +7,11 @@ This widget is meant to be a starting point for anyone who wants to start buildi
 Disclaimer: I don't work for Rise Vision, and I only started looking into how these widgets work a week ago. This is a hack and slash job done on code I am still learning about. Because I don't know what I'm doing, the widget will generate some errors when you try to build it, but it will work just fine if you host all of the files from the gulp build on a web server and link to them from within a gadget created using the Rise Vision [dashboard](http://rva.risevision.com/).
 
 ##Widget Development Environment 
+
+To get your widget into the Rise Vision system and onto a display, you will ultimately have to build the widget and host it on somewhere on the web. Then, you'll be able to link to the settings.html and widget.html pages using their url's. But if you just want to test your widget locally before going through the trouble of setting up hosting, Rise Vision has developed a [widget preview app](http://192.254.220.36/~rvi/widget-preview/) using [NWjs](http://nwjs.io/) that will let you see how your widget is going to work.
+
+To use the preview app, you'll need to have [NWjs](http://dl.nwjs.io/v0.12.1/) installed somewhere on your computer. Then, you will need to download the latest [preview app](http://192.254.220.36/~rvi/widget-preview/) from Rise Vision, and run the app using the NWjs runtime. I'm Ubuntu 14.04 with the NWjs binary mapped to the alias "nw." So for me to start the app I navigate to the folder containing the app and run the following command...
+
+...
+nw rv-widget-dev-app
+...
