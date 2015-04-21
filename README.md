@@ -16,4 +16,4 @@ To use this preview app, you'll need to have [NWjs](http://dl.nwjs.io/v0.12.1/) 
 nw rv-widget-dev-app
 ```
 
-This will open up an app that will allow you to set the settings.html and widget.html pages of the widget you want to look at. Then, you can open up two tabs in your browser and copy and paste the url's to see the two pages. At this point, your pages are linked, and you can set your settings, save them, and refresh your widget page to see the changes you've made.
+This will open up an app that will allow you to set the settings.html and widget.html pages of the widget you want to look at. Then, you can open up two tabs in your browser and copy and paste the url's to see the two pages. At this point, your pages are linked, and you can set your settings, save them, and refresh your widget page to see your changes.
