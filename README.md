@@ -6,4 +6,4 @@ This widget is meant to be a starting point for anyone who wants to start buildi
 
 Disclaimer: I don't work for Rise Vision, and I only started looking into how these widgets work a week ago. This is a hack and slash job done on code I am still learning about. Because I don't know what I'm doing, the widget will generate some errors when you try to build it, but it will work just fine if you host all of the files from the gulp build on a web server and link to them from within a gadget created using the Rise Vision [dashboard](http://rva.risevision.com/).
 
-How 
+##Widget Development Environment 
