@@ -50,4 +50,71 @@ NWjs is a really cool project that enables developers to write apps using HTMl, 
 
 Depending on what type of system you're developing on, how you install NWjs may be completely different than how I have it installed. What I am doing above is essentially running the NWjs binary and giving it the location of the preview app as the first argument, and on my system, that works. However, I showed this README to one of my coworkers to see if she could get the widget up and running in the preview app without any prior knowledge of how the code works, and hers didn't work the same way. She is using a Ubuntu 12.04 image running in Virtualbox and these are the steps she took to get the preview app up and running...
 
+```
+sudo apt-get update
+sudo apt-get install git
+sudo apt-get install nodejs
+sudo apt-get install npm
+```
+All of the above completed successfully
 
+```
+npm install -g bower
+Error: No compatible version found: bower
+```
+
+She found a stack overflow [question](http://stackoverflow.com/questions/12913141/message-failed-to-fetch-from-registry-while-trying-to-install-any-module) that helped her figure out the next few commands...
+
+```
+sudo apt-get purge nodejs npm
+curl -sL https://deb.nodesource.com/setup | sudo bash -
+sudo apt-get install -y nodejs
+```
+
+Then, she tried it again.
+
+```
+sudo npm install -g bower
+sudo npm install -g gulp
+```
+
+At this point she had everything she needed to build the widget. The next step is to actually build it.
+
+```
+git clone https://github.com/tantangula/widget-hello-world.git
+cd widget-hello-world
+npm install           **** Needed sudo   phantomjs reference??
+bower install
+```
+
+
+Now, the widget is built and ready to be opened with the Rise Vision preview app, so she downloaded NWjs and extracted it.
+
+```
+tar -xvzf FILENAME
+```
+
+She downloaded the widget viewer and extracted it.
+
+```
+unzip file.zip
+```
+
+She navigated to nw and tried to run it. It gave her a message that said it wasn't installed, but the error suggested that she try the following command to see if that would get it up and running...
+
+```
+sudo apt-get install netrw
+```
+...and it did. Next she navigated to the preview app folder and ran the following...
+
+```
+nw rv-widget-dev-app
+```
+
+... but this didnt work. It just kept displaying settings. So, she just navigated to preview app directory and ran...
+
+```
+./rv-widget-dev-app
+```
+
+At this point, the preview app was up and running. Then, she loaded in the settings.html and widget.html files from the "src" folder and opened up Chrome.
