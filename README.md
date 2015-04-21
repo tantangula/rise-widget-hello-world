@@ -39,3 +39,7 @@ nw rv-widget-dev-app
 ```
 
 This will open up an app that will allow you to set the settings.html and widget.html pages of the widget you want to look at. Then, you can open up two tabs in your browser and copy and paste the url's to see the two pages. At this point, your pages are linked, and you can set your settings, save them, and refresh your widget page to see your changes.
+
+##Now What?
+
+So now that you have the settings page open, you can input some text, save it, and refresh your widget page to see that your text has been passed to you widget. From here, you can add new fields to your settings.html page in your "src" folder and pass them to your widget.html page in the same folder to build anything you want. 
