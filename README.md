@@ -1,4 +1,4 @@
-# Rise Vision Hello World Widget
+# Hello World Widget
 
 ##Introduction
 
