@@ -26,7 +26,7 @@ gulp build
 
 The errors I was talking about earlier will happen when you get to "gulp build"
 
-Now that the widget is built, you can use the widget by either hosting the widget folder on a server or by using the Rise Vision preview app described below.
+Now that the widget is built, you can use the widget by either hosting the widget folder on a server and creating a custom gadget in the Rise Vision dashboard or by using the Rise Vision preview app described below.
 
 ##Widget Development Environment 
 
