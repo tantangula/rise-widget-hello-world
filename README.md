@@ -52,7 +52,7 @@ Depending on what type of system you're developing on, how you install NWjs may 
 
 ##Wendi's Quest
 
-She is using an Ubuntu 12.04 image running in Virtualbox, and these are the steps she took to get the preview app up and running...
+Wendi used an Ubuntu 12.04 image running in Virtualbox. These are the steps she took to build the widget, install NWjs, and launch the Rise Vision preview app.
 
 ```
 sudo apt-get update
