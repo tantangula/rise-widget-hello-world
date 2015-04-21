@@ -48,7 +48,7 @@ So now that you have the settings page open, you can input some text, save it, a
 
 NWjs is a really cool project that enables developers to write apps using HTML, CSS, and Javascript and then, launch them using the NWjs runtime. The runtime is actually just an instance of the [Chromium](https://www.chromium.org/) web browser that allows you to run [Node.js](https://nodejs.org/) modules. So I am assuming that the preview app is using a Node module to create the local server that hosts the widget and then builds the interface with HTML and CSS, but anyway....
 
-Depending on what type of system you're developing on, how you install NWjs may be completely different than how I have it installed. What I am doing above is essentially running the NWjs binary and giving it the location of the preview app as the first argument, and on my system, that works. However, I showed this README to one of my coworkers to see if she could get the widget up and running in the preview app without any prior knowledge of how the code works, and hers didn't work the same way.
+Depending on what type of system you're developing on, how you install NWjs may be completely different than how I have it installed. What I am doing above is essentially running the NWjs binary and giving it the location of the preview app as the first argument, and on my system, that works. However, I showed this README to one of my coworkers to see if she could get the widget up and running in the preview app without any prior knowledge of how the code works, and hers didn't work the same way. She was kind enough to take notes on her adventure though, and here they are...
 
 ##Wendi's Quest
 
