@@ -32,7 +32,7 @@ Now that the widget is built, you can use the widget by either hosting the widge
 
 To get your widget into the Rise Vision system and onto a display, you will ultimately have to build the widget and host it somewhere on the web. Then, you'll be able to link to the settings.html and widget.html pages using their url's. But if you just want to test your widget locally before going through the trouble of setting up hosting, Rise Vision has developed a [widget preview app](http://192.254.220.36/~rvi/widget-preview/) using [NWjs](http://nwjs.io/) that will let you see how your widget is going to work.
 
-To use this preview app, you'll need to have [NWjs](http://dl.nwjs.io/v0.12.1/) installed somewhere on your computer. Then, you will need to download the latest [preview app](http://192.254.220.36/~rvi/widget-preview/) from Rise Vision, and run the app using the NWjs runtime. I'm using Ubuntu 14.04 with the NWjs binary mapped to the alias "nw." So for me to start the app, I navigate to the folder containing the preview app and run the following command...
+To use this preview app, you'll need to have [NWjs](http://dl.nwjs.io/v0.12.1/) installed somewhere on your computer.* Then, you will need to download the latest [preview app](http://192.254.220.36/~rvi/widget-preview/) from Rise Vision, and run the app using the NWjs runtime. I'm using Ubuntu 14.04 with the NWjs binary mapped to the alias "nw." So for me to start the app, I navigate to the folder containing the preview app and run the following command...
 
 ```
 nw rv-widget-dev-app
@@ -43,3 +43,11 @@ This will open up an app that will allow you to set the settings.html and widget
 ##Now What?
 
 So now that you have the settings page open, you can input some text, save it, and refresh your widget page to see that your text has been passed to you widget. From here, you can add new fields to your settings.html page in your "src" folder and pass them to your widget.html page in the same folder to build anything you want. 
+
+##*Installing NWjs
+
+NWjs is a really cool project that enables developers to write apps using HTMl, CSS, and Javascript and then, launch them using the NWjs runtime. The runtime is actually just an instance of the [Chromium](https://www.chromium.org/) web browser that allows you to run [Node.js](https://nodejs.org/) modules. So I am assuming that the preview app is using a Node module to create the local server that hosts the widget and then builds the interface with HTML and CSS, but anyway....
+
+Depending on what type of system you're developing on, how you install NWjs may be completely different than how I have it installed. What I am doing above is essentially running the NWjs binary and giving it the location of the preview app as the first argument, and on my system, that works. However, I showed this README to one of my coworkers to see if she could get the widget up and running in the preview app without any prior knowledge of how the code works, and hers didn't work the same way. She is using a Ubuntu 12.04 image running in Virtualbox and these are the steps she took to get the preview app up and running...
+
+
