@@ -1,5 +1,5 @@
-angular.module("risevision.widget.text.settings")
-  .controller("textSettingsController", ["$scope",
+angular.module("risevision.widget.hello.world.settings")
+  .controller("helloWorldSettingsController", ["$scope",
     function ($scope) {
     }
   ])
