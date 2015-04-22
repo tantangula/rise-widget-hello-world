@@ -2,7 +2,7 @@
 
 ##Introduction
 
-This widget is meant to be a starting point for anyone who wants to start building widgets for [Rise Vision's](http://www.risevision.com) digital signage system. I started by looking at the [widget-text](https://github.com/Rise-Vision/widget-text) widget written by [Donna Peplinskie](https://github.com/donnapep), and I took out everything that wasn't essential for a simple "Hello World" style widget. This widget only has a single text input field on the settings page that saves a string and sends it to an h2 tag in the widget. 
+This widget is meant to be a starting point for anyone who wants to start building widgets for [Rise Vision's](http://www.risevision.com) digital signage system. I started by looking at the [widget-text](https://github.com/Rise-Vision/widget-text) widget written by [Donna Peplinskie](https://github.com/donnapep), and I took out everything that wasn't essential for a simple "Hello World" style widget. This widget only has a single text input field on the settings page that saves a string and then sends it to an h2 tag in the widget. 
 
 I've included comments in the code about how I added the message input and how I am using it to pass a value to the widget. By looking through code and reading the comments, you should be able to add your own input fields to the settings interface and pull their data into your widget the same way.
 
