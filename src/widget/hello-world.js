@@ -23,7 +23,9 @@ RiseVision.HelloWorld = (function(gadgets) {
    
   function getAdditionalParams(name, value) {
     if (name === "additionalParams" && value) {
+	  //This is where the settings data is parsed, and made ready to use.
       var params = JSON.parse(value);
+      //What we initially stored as "settings.additionalParams.message" becomes "params.message" by way of voodoo.
       var title = params.message;
       
       document.getElementById("message").innerHTML = title;

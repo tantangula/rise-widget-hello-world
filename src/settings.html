@@ -1,3 +1,47 @@
+<!-------------------------------------------------------------------------------------------------------------------------------------------
+
+The settings interface is built using AngularJS. To gain a better understanding of how the whole widget system works, you can 
+start your research by looking into Angular, but if you just need to take in some user input and pass it to you widget, you can 
+do the following...
+
+	Add the following inside of the form tag:
+	
+		<input type="text" ng-model="settings.additionalParams.yourVariableName"></input>
+		
+	Whatever you type instead of "yourVariableName" will become the name of the variable that is stored inside of the the Angular 
+	model. There is no need to declare it anywhere else.* 
+	
+	Once the input is added, the user can input a value and click the Rise Vision UI's "Save" button to save the value into the 
+	Angular model. Then, once the value is in the model, it can be pulled out and used in the widget using some Google Gadget Cloud magic
+	I don't understand yet. 
+	
+	To see where the data comes out on the other side, you can look at "main.js" in the /src/widget folder for 
+	more information on where the settings data is being pulled into the widget, and "hello-world.js" in the same folder for more 
+	information on how to actually use the settings data once it's been pulled in.
+	
+	
+	
+	
+	*While you don't need to formally declare model variables, you can give them a default value by adding them into...
+	
+		angular.module("risevision.widget.hello.world.settings")
+			.value("defaultSettings", {
+				"additionalParams": {
+					"yourVariableName": "Your default value."
+				}
+			});
+	
+	Look at "ctr-hello-world.js" in the /src/settings folder to see how the default value for "settings.additionalParams.message" is set.
+
+-------------------------------------------------------------------------------------------------------------------------------------------->
+
+<!------------------------------------------------------------------------------------------------------------------------------------------
+
+To give your settings interface the same look as the other Rise Vision widgets, leave most of this code alone, and skip down the form tag 
+to add your inputs.
+
+-------------------------------------------------------------------------------------------------------------------------------------------->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,6 +85,9 @@
           </div>
           <div id="settings-alert" class="alert alert-danger" ng-show="onError"></div>
           <form role="form" name="settingsform">
+			  <!-- Add you settings inside this form tag. Use the message input as an example of how to add a variable 
+			  into the Angular model. Just copy and paste the input. Then change "message" to what you want you variable 
+			  to be known as in the Angular model. --> 
 			  <h4>Message</h4>
 			  <input type="text" ng-model="settings.additionalParams.message"></input>
           </form>
