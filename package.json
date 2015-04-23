@@ -1,7 +1,7 @@
 {
-  "name": "widget-text",
+  "name": "widget-hello-world",
   "version": "0.1.0",
-  "description": "Rise Vision Text Widget",
+  "description": "Rise Vision Hello World Widget",
   "main": "gulpfile.js",
   "scripts": {
     "test": "gulp test",
