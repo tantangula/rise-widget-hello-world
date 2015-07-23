@@ -28,6 +28,8 @@ gulp build
 
 The errors I was talking about earlier will happen when you get to "gulp build"
 
+***The Gulp build isn’t necessary to get this widget working, and I’m working on taking out the gulp step and all of the files it uses to focus on the essentials for building a working widget. Gulp is used to automate code testing and optimization. It’s often used to minimize css and javascript files and to run through your code to test for errors. When you execute the "gulp build" command of the Hello World widget, it is supposed to run through gulpfile.js and output the optimized code to the dist folder. These are the files you are supposed to use as your widget, but since the Gulp build doesn’t finish successfully, we can’t use them. The files in the src folder do the same thing as the optimized files, so if you are just wanting to get a widget working, the gulp build is an extra step we don’t need.***
+
 Now that the widget is built, you can use the widget by either hosting the widget folder on a server and creating a custom gadget in the Rise Vision dashboard or by using the Rise Vision preview app described below.
 
 ##Widget Development Environment 
